@@ -23,4 +23,15 @@ router.get("/", (request, response) => {
   });
 });
 
+//search by ID/OHIP number
+router.post("/id", (request, response) => {
+  let id = request.body.id;
+  let query = `Select * from patients where ohip = ${id}`;
+  db.query(query, (err, result) => {
+    if (err) {
+      response.redirect("/");
+    }
+    return response.status(200).send({ result });
+  });
+});
 export default router;
