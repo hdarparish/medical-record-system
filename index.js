@@ -1,12 +1,28 @@
 import express from "express";
 import routes from "./src/routes.js";
-import mysql from "mysql";
+import ejs from "ejs";
+import session from "express-session"
+
 const app = express();
 const port = 3000;
 
+app.set('view engine', 'ejs')
 // parse json
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use("/", routes);
+/*
+app.use(session({
+    secret: 'randomfile',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 10000 }
+}))
+*/
+app.use('/public', express.static('public'));
+
+
+app.use(routes);
+
 
 //global error handler
 app.use((err, req, res, next) => {
