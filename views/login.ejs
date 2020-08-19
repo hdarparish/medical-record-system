@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>EMR Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="login"></div>
+        <!-- Image and text -->
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+                <img src="../assets/image1.png" width="50" height="50" class="d-inline-block " alt="" loading="lazy">
+                EMR Management System
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <div class="container-fluid">
+            <div class="row main-content bg-light text-center">
+                <div class="col-md-4 text-center company__info">
+                    <span class="company__logo"><h2><span class="fa fa-heartbeat"></span></h2></span>
+                    <h4 class="company_title">Hope Clinic</h4>
+                </div>
+                <div class="col-md-8 login_form ">
+                    <div class="container-fluid">
+                        <div class="row  justify-content-center ">
+                            <h2>Log In</h2>
+                        </div>
+                        <div class="row">
+                            <form control="" class="form-group" action="/login" method="POST" >
+                                <div class="row">
+                                    <input type="text" name="username" id="username" class="form__input"
+                                        placeholder="Username" required="required">
+                                </div>
+                                <div class="row">
+                                    <input type="password" name="password" id="password" class="form__input"
+                                        placeholder="Password" required="required">
+                                </div>
+
+                                <div class="row">
+                                    <input type="submit" value="Login" class="btn">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
