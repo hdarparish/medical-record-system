@@ -25,11 +25,37 @@ CREATE TABLE IF NOT EXISTS patients (
   address varchar(255) not null,
   PRIMARY KEY (ohip)
 )
+
+CREATE TABLE IF NOT EXISTS users (
+  username varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  password varchar(20) NOT NULL,
+  isAdmin bool NOT NULL,
+  PRIMARY KEY (username)
+)
+
+CREATE TABLE IF NOT EXISTS billing (
+  ohip int(9) NOT null,
+  amount double not null,
+  PRIMARY KEY (ohip)
+)
 ```
 
-#### Populate Database
+### Populate Database
+
 ```
 insert into patients values (123456789, 'Jack','Daniel','4160001231','2000-01-01','jd@email.com','Male','212 Streat Boulivard');
 insert into patients values (111654987, 'Thanos','n/a','4161111111','1960-06-06','Thanos@email.com','Male','6 infitiy stones streat');
 insert into patients values (456125489, 'John','Constantine','4164453554','1970-07-30','Constantine@email.com','Male','670 Avenue West');
+
+insert into users values ('johndoe', 'jdoe@email.com','password',1);
+insert into users values ('janedoe', 'janedoe@email.com','password',1);
+
+insert into billing values (123456789, 45);
+insert into billing values (456125489, 99);
+
+
+
 ```
+
+
