@@ -11,8 +11,8 @@ For regular mode `npm start`
 ### Database Setup
 Enter the below in DBeaver
 ```
-Create database health_System
-use health_system 
+CREATE DATABASE health_System
+USE health_system 
 
 CREATE TABLE IF NOT EXISTS patients (
   ohip int(9) NOT NULL AUTO_INCREMENT,
@@ -34,11 +34,32 @@ CREATE TABLE IF NOT EXISTS users (
   PRIMARY KEY (username)
 )
 
+CREATE TABLE IF NOT EXISTS doctors (
+  doctor_id int(5) NOT NULL,
+  first_name varchar(255) NOT NULL,
+  last_name varchar(255) NOT NULL,
+  specialization varchar(255) not null,
+  department varchar (255) not null,
+  PRIMARY KEY (doctor_id)
+  )
+
 CREATE TABLE IF NOT EXISTS billing (
   ohip int(9) NOT null,
   amount double not null,
   PRIMARY KEY (ohip)
 )
+
+ CREATE TABLE IF NOT EXISTS appointment (
+ 	appointment_id int(5) NOT NULL AUTO_INCREMENT, 
+ 	ohip int(9) NOT null,
+	appointment_time datetime not null,
+	doctor_id int(5) not null,
+	PRIMARY KEY (appointment_id),
+	foreign key (ohip) references patients (ohip),
+	foreign key (doctor_id) references doctors (doctor_id)
+)
+
+
 ```
 
 ### Populate Database
@@ -50,6 +71,10 @@ insert into patients values (456125489, 'John','Constantine','4164453554','1970-
 
 insert into users values ('johndoe', 'jdoe@email.com','password',1);
 insert into users values ('janedoe', 'janedoe@email.com','password',1);
+
+insert into doctors values (10000,'Mike', 'Johns', 'GP','ER')
+insert into doctors values (10010,'George', 'Jones', 'Infectious Diseases','Infectious Diseases')
+insert into doctors values (10020,'Ann', 'Dorathy', 'General','Medicine')
 
 insert into billing values (123456789, 45);
 insert into billing values (456125489, 99);
