@@ -162,7 +162,7 @@ router.put("/editprofile/:id", (request, response) => {
 });
 
 router.get("/viewBillingAccounts", (request, response) => {
-  let query = `select patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
+  let query = `select  bill_number, patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
   db.query(query, (err, result) => {
     if (err) throw err;
     return response.render("billingAccounts.ejs", {
