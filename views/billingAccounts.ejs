@@ -1,7 +1,7 @@
 <%- include ('./header.ejs') -%>
 <main>
     <div class="content">
-        <form class="form-inline" action="/addBill" method="GET">
+        <form class="form-inline" action="/viewAddBill" method="GET">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>Add Bill</button>
         </form>
 
@@ -22,12 +22,12 @@
             <% billing.forEach((bill, index) => { %>
                 <tr>
                     <th scope="row"><%= bill.bill_number%></th>
-                    <td><%= bill.last_name %></td>
+                    <td><%= bill.ohip %></td>
                     <td><%= bill.last_name %></td>
                     <td><%= bill.first_name %></td>
                     <td><%= bill.phone_number %></td>
                     <td><%= bill.email %></td>
-                    <td>@<%= bill.amount %></td>
+                    <td>$<%= bill.amount %></td>
                 </tr>
             <% }) %>
         </tbody>

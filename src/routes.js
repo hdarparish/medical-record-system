@@ -172,11 +172,54 @@ router.get("/viewBillingAccounts", (request, response) => {
     });
   });
 });
-router.get("/addBill", (request, response) => {
+router.get("/viewAddBill", (request, response) => {
   return response.render("addBills.ejs", {
     title: "Add Bill",
     message: "",
   });
 });
+
+router.post("/addBill", (request,response) => {
+  let ohip = request.body.ohip_number;
+  let amount = request.body.amount;
+
+  let query = `INSERT INTO billing (ohip,amount) values (?,?)`;
+  db.query(query,[ohip,amount], (err, result) => {
+    if (err) throw err;
+    return response.redirect('/viewBillingAccounts')
+  });
+});
+
+router.get("/viewAppointment", (request,response) => {
+  let query = `select appointment_time, appointment.ohip, patients.last_name as patient_lname, patients.first_name, doctors.doctor_id, doctors.last_name  from appointment, patients, doctors where appointment.ohip = patients.ohip and doctors.doctor_id = appointment.doctor_id
+  `;
+  db.query(query, (err, result) => {
+    if (err) throw err;
+    return response.render("viewAppointment.ejs", {
+      title: "View appointments",
+      appointments: result,
+      message: "",
+    });
+  });
+})
+
+router.get("/viewaddAppointment", (request,response) => {
+  return response.render("addAppointment.ejs", {
+    title: "Add Appointment",
+    message: "",
+  });
+})
+
+router.post("/addAppointment", (request,response) => {
+  let patient_id = request.body.ohip_number;
+  let appointment_time = request.body.appointment_time;
+  let doctor_id = request.body.referred_doctor;
+
+  let query = `INSERT INTO appointment (ohip,appointment_time,doctor_id) values (?,?,?)`;
+  db.query(query, [patient_id,appointment_time,doctor_id], (err, result) => {
+    if (err) throw err;
+    return response.redirect("/viewAppointment")
+  });
+})
 
 export default router;
