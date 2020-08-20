@@ -1,0 +1,44 @@
+<%- include ('./header.ejs') -%>
+<main>
+    <div class="content">
+        <!-- <input type="submit" value="Schedule Appointment" id="appointment_btn"></div> -->
+       
+        <form class="hospital-form" action="/addBill" method="POST">
+            <label for="ohip-number">Health Card Number</label>
+            <input type="text" id="ohip-number">
+
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name">
+
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name">
+
+            <label for="age">Age</label>
+            <input type="text" id="age">
+
+            <label for="gender">Gender</label>
+            <input type="text" id="gender">
+
+            <label for="email">Email</label>
+            <input type="text" id="email">
+
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile">
+
+            <label for="address">Address</label>
+            <input type="text" id="address">
+
+            <label for="billamount">Amount</label>
+            <input type="text" id="billing">
+
+            <input type="submit" value="Save" id="submit_btn">    
+        </form>         
+
+    </div>
+</main>
+
+<!--Footer-->
+<footer>copyright&copy;Hope Clinic 2020</footer>
+</body>
+
+</html>

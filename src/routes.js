@@ -18,30 +18,30 @@ const router = express.Router();
 });
 */
 
-router.get('/', (request, response) => {
-  let message = '';
-  response.render('login.ejs', {
+router.get("/", (request, response) => {
+  let message = "";
+  response.render("login.ejs", {
     message: message,
-    pageId: 'welcome',
-    title: 'Welcome',
-  })
+    pageId: "welcome",
+    title: "Welcome",
+  });
 });
 
-router.get('/patient', (request,response) => {
-  let message = '';
-  response.render('patient.ejs', {
+router.get("/patient", (request, response) => {
+  let message = "";
+  response.render("patient.ejs", {
     message: message,
-    pageId: 'welcome',
-    title: 'Welcome',
-  })
-})
+    pageId: "welcome",
+    title: "Welcome",
+  });
+});
 
 //User login
 router.post("/login", (request, response) => {
   let username = request.body.username;
   let password = request.body.password;
   try {
-    if (request.method == 'POST') {
+    if (request.method == "POST") {
       let query = "Select * from users where username = ?";
       db.query(query, [username], (err, result) => {
         if (err) throw err;
@@ -49,55 +49,50 @@ router.post("/login", (request, response) => {
         if (result.length > 0) {
           //check if the password matches the one entered
           if (password == result[0].password) {
-            return response.status(200).redirect('/mainpage');
-
+            return response.status(200).redirect("/mainpage");
           }
         }
-        return response.status(401).redirect('/')
+        return response.status(401).redirect("/");
       });
-
     }
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     // next(err);
   }
 });
 
-router.get('/mainpage', (request, response) => {
-  response.render('mainpage.ejs', {
-    message: '',
-    title: 'Homepage',
-  })
-})
+router.get("/mainpage", (request, response) => {
+  response.render("mainpage.ejs", {
+    message: "",
+    title: "Homepage",
+  });
+});
 
-router.get('/viewdoctor', (request, response) => {
-  response.render('doctor.ejs', {
-    message: '',
-    title: 'Homepage',
-  })
-})
+router.get("/viewdoctor", (request, response) => {
+  response.render("doctor.ejs", {
+    message: "",
+    title: "Homepage",
+  });
+});
 
 //search by ID/OHIP number
 router.post("/search", (request, response) => {
   let id = request.body.id;
-  console.log(id)
+  console.log(id);
   let query = `Select * from patients where ohip = ?`;
   db.query(query, [id], (err, result) => {
     if (err) {
       throw err;
     }
     if (result.length > 0) {
-
       //return response.status(200).redirect('/editprofile')
-     // return response.status(200).send({ result });
+      // return response.status(200).send({ result });
 
-     return response.render('patient.ejs', {
-      title: 'View Patient',
-      patient: result[0],
-      message: ''
-
-    })
+      return response.render("patient.ejs", {
+        title: "View Patient",
+        patient: result[0],
+        message: "",
+      });
     }
     return response.status(401).send({ message: "incorrect OHIP" });
   });
@@ -145,7 +140,6 @@ router.post("/addprofile", (request, response) => {
   });
 });
 
-
 router.put("/editprofile/:id", (request, response) => {
   let id = request.params.id;
   let firstName = request.body.firstName;
@@ -165,6 +159,24 @@ router.put("/editprofile/:id", (request, response) => {
       return response.status(200).send({ message: "Profile Updated" });
     }
   );
+});
+
+router.get("/viewBillingAccounts", (request, response) => {
+  let query = `select patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
+  db.query(query, (err, result) => {
+    if (err) throw err;
+    return response.render("billingAccounts.ejs", {
+      title: "View Billings",
+      billing: result,
+      message: "",
+    });
+  });
+});
+router.get("/addBill", (request, response) => {
+  return response.render("addBills.ejs", {
+    title: "Add Bill",
+    message: "",
+  });
 });
 
 export default router;
