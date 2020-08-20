@@ -1,0 +1,36 @@
+<%- include ('./header.ejs') -%>
+<main>
+    <div class="content">
+                      
+        <h3>Appointment</h3>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Schedule Appointment</button>
+        <!-- <input type="submit" value="Schedule Appointment" id="appointment_btn"></div> -->
+       </nav>
+        <form class="hospital-form" method="POST" action="/addAppointment">
+            <label for="ohip-number">Health Card Number</label>
+            <input type="text" name="ohip_number" id="ohip_number" required>
+
+            <label>Date and Time
+            <input type="datetime-local" name="appointment_time" id="appointment_time" required>
+            </label>
+
+            <label>Referred to Doctor
+            <select id="referred_doctor" name="referred_doctor">
+            <option value="" selected="selected">Select </option>
+            <option value="10000" >Dr. Mike Johns</option>
+            <option value="10010" >Dr. George Jones</option>
+            <option value="10020" >Dr. Ann Dorathy</option>
+            </select>
+            </label> 
+
+            <input type="submit" value="Save" id="submit_btn">    
+        </form>         
+
+    </div>
+</main>
+
+<!--Footer-->
+<footer>copyright&copy;Hope Clinic 2020</footer>
+</body>
+
+</html>
