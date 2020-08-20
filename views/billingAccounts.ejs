@@ -9,6 +9,7 @@
        <table class="table table-striped">
         <thead>
           <tr>
+            <th scope="col">Receipt</th>
             <th scope="col">OHIP</th>
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
@@ -20,7 +21,8 @@
         <tbody>
             <% billing.forEach((bill, index) => { %>
                 <tr>
-                    <th scope="row"><%= bill.ohip %></th>
+                    <th scope="row"><%= bill.bill_number%></th>
+                    <td><%= bill.last_name %></td>
                     <td><%= bill.last_name %></td>
                     <td><%= bill.first_name %></td>
                     <td><%= bill.phone_number %></td>
