@@ -15,43 +15,45 @@ CREATE DATABASE health_System
 USE health_system 
 
 CREATE TABLE IF NOT EXISTS patients (
-  ohip int(9) NOT NULL AUTO_INCREMENT,
-  first_name varchar(255) NOT NULL,
-  last_name varchar(255) NOT NULL,
-  phone_number varchar(20) NOT NULL,
-  dateof_birth date NOT NULL,
-  email varchar(255),
-  gender varchar(20) NOT NULL,
-  address varchar(255) not null,
-  PRIMARY KEY (ohip)
+	ohip int(9) NOT NULL AUTO_INCREMENT,
+	first_name varchar(255) NOT NULL,
+	last_name varchar(255) NOT NULL,
+	phone_number varchar(20) NOT NULL,
+	dateof_birth date NOT NULL,
+	email varchar(255),
+	gender varchar(20) NOT NULL,
+	address varchar(255) not null,
+	PRIMARY KEY (ohip)
 )
 
 CREATE TABLE IF NOT EXISTS users (
-  username varchar(255) NOT NULL,
-  email varchar(255) NOT NULL,
-  password varchar(20) NOT NULL,
-  isAdmin bool NOT NULL,
-  PRIMARY KEY (username)
+	username varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	password varchar(20) NOT NULL,
+	isAdmin bool NOT NULL,
+	PRIMARY KEY (username)
 )
 
 CREATE TABLE IF NOT EXISTS doctors (
-  doctor_id int(5) NOT NULL,
-  first_name varchar(255) NOT NULL,
-  last_name varchar(255) NOT NULL,
-  specialization varchar(255) not null,
-  department varchar (255) not null,
-  PRIMARY KEY (doctor_id)
-  )
+	doctor_id int(5) NOT NULL,
+	first_name varchar(255) NOT NULL,
+	last_name varchar(255) NOT NULL,
+	specialization varchar(255) not null,
+	department varchar (255) not null,
+	PRIMARY KEY (doctor_id)
+)
 
 CREATE TABLE IF NOT EXISTS billing (
-  ohip int(9) NOT null,
-  amount double not null,
-  PRIMARY KEY (ohip)
+	bill_number int(5) NOT NULL AUTO_INCREMENT
+	ohip int(9) NOT null,
+	amount double not null,
+	PRIMARY KEY (ohip)
+	foreign key (ohip) references patients (ohip),
 )
 
  CREATE TABLE IF NOT EXISTS appointment (
- 	appointment_id int(5) NOT NULL AUTO_INCREMENT, 
- 	ohip int(9) NOT null,
+	appointment_id int(5) NOT NULL AUTO_INCREMENT, 
+	ohip int(9) NOT null,
 	appointment_time datetime not null,
 	doctor_id int(5) not null,
 	PRIMARY KEY (appointment_id),
@@ -78,9 +80,6 @@ insert into doctors values (10020,'Ann', 'Dorathy', 'General','Medicine')
 
 insert into billing values (123456789, 45);
 insert into billing values (456125489, 99);
-
-
-
 ```
 
 
