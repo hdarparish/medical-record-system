@@ -1,0 +1,20 @@
+<%- include ('./header.ejs') -%>
+<main>
+    <div class="content">
+     
+        <h3>Search for Patient</h3>
+
+        <form class="hospital-form" method="POST" action="/searchPatient">
+            <label for="ohip-number">Health Card Number</label>
+            <input type="text" id="health_number" name="health_number" maxlength="9"  required >
+            
+            <input type="submit" value="Submit" id="submit_btn">    
+        </form>                   
+    </div>
+</main>
+
+<!--Footer-->
+<footer>copyright&copy;Hope Clinic 2020</footer>
+</body>
+
+</html>

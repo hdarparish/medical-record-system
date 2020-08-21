@@ -2,28 +2,13 @@ import express, { request, response } from "express";
 import db from "./db.js";
 
 const router = express.Router();
-//database connection
-
-// get all the records
-/*router.get("/", (request, response) => {
-  let query = "SELECT * FROM `patients`"; // query database to get all the players
-
-  // execute query
-  db.query(query, (err, result) => {
-    if (err) {
-      response.redirect("/");
-    }
-    return response.status(200).send({ result });
-  });
-});
-*/
 
 router.get("/", (request, response) => {
   let message = "";
   response.render("login.ejs", {
     message: message,
-    pageId: "welcome",
-    title: "Welcome",
+    pageId: "Login",
+    title: "Login",
   });
 });
 
@@ -75,10 +60,17 @@ router.get("/viewdoctor", (request, response) => {
   });
 });
 
+router.get("/viewSearchPatient", (request,response) => {
+  return response.render("searchPatient.ejs", {
+    title: "Search Patient",
+    message: "",
+  });
+})
+
 //search by ID/OHIP number
-router.post("/search", (request, response) => {
-  let id = request.body.id;
-  console.log(id);
+router.post("/searchPatient", (request, response) => {
+  let id = request.body.health_number;
+
   let query = `Select * from patients where ohip = ?`;
   db.query(query, [id], (err, result) => {
     if (err) {
@@ -94,7 +86,15 @@ router.post("/search", (request, response) => {
         message: "",
       });
     }
-    return response.status(401).send({ message: "incorrect OHIP" });
+
+    else {
+      return response.render("addPatient.ejs", {
+        title: "Add Patient",
+        health_number : id,
+        message: "",
+      });
+    }
+
   });
 });
 
@@ -161,11 +161,11 @@ router.put("/editprofile/:id", (request, response) => {
   );
 });
 
-router.get("/viewBillingAccounts", (request, response) => {
+router.get("/viewBills", (request, response) => {
   let query = `select  bill_number, patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
   db.query(query, (err, result) => {
     if (err) throw err;
-    return response.render("billingAccounts.ejs", {
+    return response.render("viewBills.ejs", {
       title: "View Billings",
       billing: result,
       message: "",
@@ -186,7 +186,7 @@ router.post("/addBill", (request,response) => {
   let query = `INSERT INTO billing (ohip,amount) values (?,?)`;
   db.query(query,[ohip,amount], (err, result) => {
     if (err) throw err;
-    return response.redirect('/viewBillingAccounts')
+    return response.redirect('/viewBills')
   });
 });
 
