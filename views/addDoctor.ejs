@@ -6,22 +6,22 @@
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add Doctor</button>
         <!-- <input type="submit" value="Add Patient" id="addpatient_btn"></div> -->
        
-        <form class="hospital-form">
+        <form class="hospital-form" method="POST" action="/addDoctor">
 
             <label for="doctor-id">Doctor Id</label>
-            <input type="text" id="doctor-id">
+            <input type="text" id="doctor_id" name="doctor_id" max="5">
 
             <label for="first-name">First Name</label>
-            <input type="text" id="first-name">
+            <input type="text" id="first_name" name="first_name">
 
             <label for="last-name">Last Name</label>
-            <input type="text" id="last-name">
+            <input type="text" id="last_name" name="last_name">
 
             <label for="specialization">Specialization</label>
-            <input type="text" id="specialization">
+            <input type="text" id="specialization" name="specialization">
 
             <label for="department">Department</label>
-            <input type="text" id="department">
+            <input type="text" id="department" name="department">
 
           
             <input type="submit" value="Save" id="submit_btn">    

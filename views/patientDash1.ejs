@@ -30,15 +30,35 @@
                     <td><%= patientProfile.email %></td>
                     <td><%= patientProfile.phone_number %></td>
                     <td><%= patientProfile.address %></td>
-
-
                 </tr>
-
             </tbody>
         </table>
     </div>
 
-
+    <h3>Medical History</h3>
+    <% if (medicalHistory.length > 0) {%>
+        <table class="table table-striped">
+         <thead>
+           <tr>
+             <th scope="col">Date</th>
+             <th scope="col">Observation</th>
+             <th scope="col">Laboratory</th>
+             <th scope="col">Prescription</th>
+           </tr>
+         </thead>
+         <tbody>
+             <% medicalHistory.forEach((entry, index) => { %>
+                 <tr>
+                     <th scope="row"><%= entry.observation_date.toLocaleString()%></th>
+                     <td><%= entry.observation %></td>
+                     <td><%= entry.laboratory %></td>
+                     <td><%= entry.prescription %></td>
+                 </tr>
+             <% }) %>
+         </tbody>
+ 
+       </table>
+       <% } %>
 </main>
 
 </div>

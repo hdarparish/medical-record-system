@@ -4,22 +4,22 @@
                       
         <h3>Doctor Diagnosis</h3>
              
-        <form class="hospital-form">
+        <form class="hospital-form" method="POST" action="/AddDiagnosis">
 
             <label for="doctor-id">Doctor Id</label>
-            <input type="text" id="doctor-id">
+            <input type="text" id="doctor_id" name="doctor_id">
 
             <label for="ohip">OHIP</label>
-            <input type="text" id="ohip">
+            <input type="text" id="ohip" name="ohip">
 
             <label for="diagnosis">Diagnosis</label>
-            <textarea id="diagnosis"></textarea>
+            <textarea id="diagnosis" name="diagnosis"></textarea>
 
             <label for="labresult">Lab Result</label>
-            <textarea id="labresult"></textarea>
+            <textarea id="lab_result" name="lab_result"></textarea>
 
             <label for="prescription">Prescription</label>
-            <textarea id="prescription"></textarea>
+            <textarea id="prescription" name="prescription"></textarea>
           
             <input type="submit" value="Save" id="submit_btn">    
         </form>         

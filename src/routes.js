@@ -52,10 +52,9 @@ router.get("/mainpage", (request, response) => {
   });
 });
 
-
 router.get("/viewdoctors", (request, response) => {
   let query = `select * from doctors`;
-  
+
   db.query(query, (err, result) => {
     if (err) throw err;
     return response.render("viewDoctors.ejs", {
@@ -73,11 +72,49 @@ router.get("/viewAddDoctor", (request, response) => {
   });
 });
 
+router.post("/addDoctor", (request, response) => {
+  let id = request.body.doctor_id;
+  let first_name = request.body.first_name;
+  let last_name = request.body.last_name;
+  let specialization = request.body.specialization;
+  let department = request.body.department;
+
+  let query = `INSERT INTO doctors VALUES (?,?,?,?,?)`;
+
+  db.query(
+    query,
+    [id, first_name, last_name, specialization, department],
+    (err, result) => {
+      if (err) throw err;
+      return response.redirect("/viewDoctors");
+    }
+  );
+});
+
 router.get("/viewAddDiagnosis", (request, response) => {
   return response.render("diagnosis.ejs", {
     title: "Add Diagnosis",
     message: "",
   });
+});
+
+router.post("/AddDiagnosis", (request, response) => {
+  let doctor_id = request.body.doctor_id;
+  let patient_id = request.body.ohip;
+  let diagnosis = request.body.diagnosis;
+  let lab_result = request.body.lab_result;
+  let prescription = request.body.prescription;
+
+  let query = `Insert into medical_observation (doctor_id,ohip,observation_date,observation,laboratory,prescription) values (?,?,localtime,?,?,?)`;
+
+  db.query(
+    query,
+    [doctor_id, patient_id, diagnosis, lab_result, prescription],
+    (err, result) => {
+      if (err) throw err;
+      return response.redirect("/viewSearchPatient");
+    }
+  );
 });
 
 router.get("/viewSearchPatient", (request, response) => {
@@ -87,22 +124,24 @@ router.get("/viewSearchPatient", (request, response) => {
   });
 });
 
-
-
 //search by ID/OHIP number
 router.post("/searchPatient", (request, response) => {
   let id = request.body.health_number;
 
   let query = `Select * from patients where ohip = ?`;
+  let patientQuery = `Select * from medical_observation where ohip = ?`;
   db.query(query, [id], (err, result) => {
     if (err) {
       throw err;
     }
     if (result.length > 0) {
-      return response.render("patientDash1.ejs", {
-        title: "View Patient",
-        patientProfile: result[0],
-        message: "",
+      db.query(patientQuery, [id], (err, medicalResult) => {
+        return response.render("patientDash1.ejs", {
+          title: "View Patient",
+          patientProfile: result[0],
+          medicalHistory: medicalResult,
+          message: "",
+        });
       });
     } else {
       return response.render("addPatient.ejs", {
@@ -115,7 +154,7 @@ router.post("/searchPatient", (request, response) => {
 });
 
 router.post("/addNewPatient", (request, response) => {
-  let id = request.body.health_number;
+  let id = request.body.ohip_number;
   let firstName = request.body.first_name;
   let lastName = request.body.last_name;
   let birthDay = request.body.dateof_birth;
@@ -149,7 +188,7 @@ router.post("/addNewPatient", (request, response) => {
         ],
         (err, result) => {
           if (err) throw err;
-          return response.status(200).send({ message: "Profile Added" });
+          return response.redirect("/viewSearchPatient");
         }
       );
     }
