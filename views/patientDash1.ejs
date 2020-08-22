@@ -2,7 +2,9 @@
 <main>
     <div class="content">
         <h3>Patient Profile</h3>
-
+        <form class="form-inline" action="/viewAddAppointment" method="GET">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>Edit Patient</button>
+        </form>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -36,23 +38,6 @@
         </table>
     </div>
 
-    <form class="form-inline" action="/viewPatientProfile" method="GET">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>View Patient</button>
-    </form>
-
-    <form class="form-inline" action="/EditPatientProfile" method="GET">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>Edit Patient</button>
-    </form>
-
-    <form class="form-inline" action="/viewDiagnosticReport" method="GET">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>View Diagnostic Report</button>
-    </form>
-
-    <form class="form-inline" action="/viewLabReport" method="GET">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>View Lab Report</button>
-    </form>
-
-    </div>
 
 </main>
 

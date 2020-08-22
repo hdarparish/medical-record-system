@@ -1,41 +1,46 @@
 <%- include ('./header.ejs') -%>
 <main>
     <div class="content">
-
-        <h3> Doctor </h3>
-
-        <form class="hospital-form" method="POST" action="/viewDoctor">
-            <label for="ohip-number">Health Card Number</label>
-
-            <input type="submit" value="Submit" id="submit_btn">
+        <h3>Doctor Profile</h3>
+        <form class="form-inline" action="/viewAddDoctor" method="GET">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>Add Doctor</button>
         </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
 
-        <form class="hospital-form" method="POST" action="/viewDoctor">
-            <label for="diagnosis">Diagnosis</label>
-            <textarea id="diagnosis"></textarea>
+                    <th scope="col">Doctor Id</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Specialization</th>
+                    <th scope="col">Department</th>
 
-            <input type="submit" value="Submit" id="submit_btn">
+                </tr>
+            </thead>
+            <tbody>
+                <% doctorProfile.forEach((doctor, index) => { %>
+                <tr>
+                    <th scope="row"><%= doctor.doctor_id %></th>
+                    <td><%= doctor.last_name %></td>
+                    <td><%= doctor.first_name %></td>
+                    <td><%= doctor.specialization %></td>
+                    <td><%= doctor.department %></td>
+                  
+                </tr>
+                <% }) %>
 
-        </form>
-
-        <form class="hospital-form" method="POST" action="/viewDoctor">
-            <label for="labresult">Lab Result</label>
-            <textarea id="labresult"></textarea>
-
-            <input type="submit" value="Submit" id="submit_btn">
-        </form>
-
-        <form class="hospital-form" method="POST" action="/viewDoctor">
-            <label for="prescription">Prescription</label>
-            <textarea id="prescription"></textarea>
-
-            <input type="submit" value="Submit" id="submit_btn">
-        </form>
+            </tbody>
+        </table>
     </div>
+
+
 </main>
+
+</div>
 
 <!--Footer-->
 <footer>copyright&copy;Hope Clinic 2020</footer>
+
 </body>
 
 </html>

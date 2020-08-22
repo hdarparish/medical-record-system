@@ -52,10 +52,31 @@ router.get("/mainpage", (request, response) => {
   });
 });
 
-router.get("/viewdoctor", (request, response) => {
-  response.render("doctor.ejs", {
+
+router.get("/viewdoctors", (request, response) => {
+  let query = `select * from doctors`;
+  
+  db.query(query, (err, result) => {
+    if (err) throw err;
+    return response.render("viewDoctors.ejs", {
+      title: "View Doctors",
+      doctorProfile: result,
+      message: "",
+    });
+  });
+});
+
+router.get("/viewAddDoctor", (request, response) => {
+  return response.render("addDoctor.ejs", {
+    title: "Add Doctor",
     message: "",
-    title: "Homepage",
+  });
+});
+
+router.get("/viewAddDiagnosis", (request, response) => {
+  return response.render("diagnosis.ejs", {
+    title: "Add Diagnosis",
+    message: "",
   });
 });
 
@@ -65,6 +86,8 @@ router.get("/viewSearchPatient", (request, response) => {
     message: "",
   });
 });
+
+
 
 //search by ID/OHIP number
 router.post("/searchPatient", (request, response) => {
@@ -155,7 +178,7 @@ router.put("/editprofile/:id", (request, response) => {
 });
 
 router.get("/viewBills", (request, response) => {
-  let query = `select  bill_number, patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
+  let query = `select bill_number, patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
   db.query(query, (err, result) => {
     if (err) throw err;
     return response.render("viewBills.ejs", {
@@ -165,6 +188,7 @@ router.get("/viewBills", (request, response) => {
     });
   });
 });
+
 router.get("/viewAddBill", (request, response) => {
   return response.render("addBills.ejs", {
     title: "Add Bill",
