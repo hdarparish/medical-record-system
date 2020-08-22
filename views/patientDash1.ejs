@@ -1,0 +1,66 @@
+<%- include ('./header.ejs') -%>
+<main>
+    <div class="content">
+        <h3>Patient Profile</h3>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+
+                    <th scope="col">OHIP</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Address</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row"><%= patientProfile.ohip %></th>
+                    <td><%= patientProfile.last_name %></td>
+                    <td><%= patientProfile.first_name %></td>
+                    <td><%= patientProfile.dateof_birth.toLocaleDateString() %></td>
+                    <td><%= patientProfile.gender %></td>
+                    <td><%= patientProfile.email %></td>
+                    <td><%= patientProfile.phone_number %></td>
+                    <td><%= patientProfile.address %></td>
+
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <form class="form-inline" action="/viewPatientProfile" method="GET">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>View Patient</button>
+    </form>
+
+    <form class="form-inline" action="/EditPatientProfile" method="GET">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>Edit Patient</button>
+    </form>
+
+    <form class="form-inline" action="/viewDiagnosticReport" method="GET">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>View Diagnostic Report</button>
+    </form>
+
+    <form class="form-inline" action="/viewLabReport" method="GET">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=>View Lab Report</button>
+    </form>
+
+    </div>
+
+</main>
+
+</div>
+
+<!--Footer-->
+<footer>copyright&copy;Hope Clinic 2020</footer>
+
+</body>
+
+</html>

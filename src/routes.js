@@ -42,7 +42,6 @@ router.post("/login", (request, response) => {
     }
   } catch (err) {
     console.error(err);
-    // next(err);
   }
 });
 
@@ -77,10 +76,7 @@ router.post("/searchPatient", (request, response) => {
       throw err;
     }
     if (result.length > 0) {
-      //return response.status(200).redirect('/editprofile')
-      // return response.status(200).send({ result });
-      console.log(result[0])
-      return response.render("patientDash-1.ejs", {
+      return response.render("patientDash1.ejs", {
         title: "View Patient",
         patientProfile: result[0],
         message: "",

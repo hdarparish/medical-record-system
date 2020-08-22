@@ -20,7 +20,7 @@
         <tbody>
             <% appointments.forEach((appointment, index) => { %>
                 <tr>
-                    <th scope="row"><%= appointment.appointment_time%></th>
+                    <th scope="row"><%= appointment.appointment_time.toLocaleString()%></th>
                     <td><%= appointment.ohip %></td>
                     <td><%= appointment.last_name %></td>
                     <td><%= appointment.first_name %></td>

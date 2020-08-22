@@ -4,7 +4,7 @@
     <h3>Patient Profile</h3>
 
 
-    <% if (patientProfile.length > 0) {%>
+    <% if (patientProfile.length) {%>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <% patientProfile.forEach((patientProfile, index) => { %>
+
         <tr>
           <th scope="row">
           <td><%= patientProfile.ohip %></td>
@@ -30,11 +30,10 @@
           <td><%= patientProfile.last_name %></td>
           <td><%= patientProfile.reason %></td>
         </tr>
-        <% }) %>
       </tbody>
 
     </table>
-
+    <% } %>
     <div class="sub-content">
 
       <h3>Prescription</h3>
