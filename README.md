@@ -15,7 +15,7 @@ CREATE DATABASE health_System
 USE health_system 
 
 CREATE TABLE IF NOT EXISTS patients (
-	ohip int(9) NOT NULL AUTO_INCREMENT,
+	ohip int(9) NOT NULL,
 	first_name varchar(255) NOT NULL,
 	last_name varchar(255) NOT NULL,
 	phone_number varchar(20) NOT NULL,
@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS doctors (
 )
 
 CREATE TABLE IF NOT EXISTS billing (
-	bill_number int(5) NOT NULL AUTO_INCREMENT
+	bill_number int(5) NOT NULL AUTO_INCREMENT,
 	ohip int(9) NOT null,
 	amount double not null,
-	PRIMARY KEY (ohip)
+	PRIMARY KEY (bill_number),
 	foreign key (ohip) references patients (ohip),
 )
 
