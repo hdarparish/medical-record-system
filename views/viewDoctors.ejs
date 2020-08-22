@@ -1,0 +1,41 @@
+<%- include ('./header.ejs') -%>
+<main>
+    <div class="content">
+
+        <h3> Doctor </h3>
+
+        <form class="hospital-form" method="POST" action="/viewDoctor">
+            <label for="ohip-number">Health Card Number</label>
+
+            <input type="submit" value="Submit" id="submit_btn">
+        </form>
+
+        <form class="hospital-form" method="POST" action="/viewDoctor">
+            <label for="diagnosis">Diagnosis</label>
+            <textarea id="diagnosis"></textarea>
+
+            <input type="submit" value="Submit" id="submit_btn">
+
+        </form>
+
+        <form class="hospital-form" method="POST" action="/viewDoctor">
+            <label for="labresult">Lab Result</label>
+            <textarea id="labresult"></textarea>
+
+            <input type="submit" value="Submit" id="submit_btn">
+        </form>
+
+        <form class="hospital-form" method="POST" action="/viewDoctor">
+            <label for="prescription">Prescription</label>
+            <textarea id="prescription"></textarea>
+
+            <input type="submit" value="Submit" id="submit_btn">
+        </form>
+    </div>
+</main>
+
+<!--Footer-->
+<footer>copyright&copy;Hope Clinic 2020</footer>
+</body>
+
+</html>

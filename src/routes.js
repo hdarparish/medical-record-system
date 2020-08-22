@@ -79,10 +79,10 @@ router.post("/searchPatient", (request, response) => {
     if (result.length > 0) {
       //return response.status(200).redirect('/editprofile')
       // return response.status(200).send({ result });
-
-      return response.render("patient.ejs", {
+      console.log(result[0])
+      return response.render("patientDash-1.ejs", {
         title: "View Patient",
-        patient: result[0],
+        patientProfile: result[0],
         message: "",
       });
     } else {

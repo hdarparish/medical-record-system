@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS billing (
 
 ```
 insert into patients values (123456789, 'Jack','Daniel','4160001231','2000-01-01','jd@email.com','Male','212 Streat Boulivard');
-insert into patients values (111654987, 'Thanos','n/a','4161111111','1960-06-06','Thanos@email.com','Male','6 infitiy stones streat');
+insert into patients values (111654987, 'Thanos','n/a','4161111111','1960-06-06','Thanos@email.com','Male','6 infitiy stones street');
 insert into patients values (456125489, 'John','Constantine','4164453554','1970-07-30','Constantine@email.com','Male','670 Avenue West');
 
 insert into users values ('johndoe', 'jdoe@email.com','password',1);
