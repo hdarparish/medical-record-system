@@ -42,7 +42,6 @@ router.post("/login", (request, response) => {
     }
   } catch (err) {
     console.error(err);
-    // next(err);
   }
 });
 
@@ -53,10 +52,31 @@ router.get("/mainpage", (request, response) => {
   });
 });
 
-router.get("/viewdoctor", (request, response) => {
-  response.render("viewDoctors.ejs", {
+
+router.get("/viewdoctors", (request, response) => {
+  let query = `select * from doctors`;
+  
+  db.query(query, (err, result) => {
+    if (err) throw err;
+    return response.render("viewDoctors.ejs", {
+      title: "View Doctors",
+      doctorProfile: result,
+      message: "",
+    });
+  });
+});
+
+router.get("/viewAddDoctor", (request, response) => {
+  return response.render("addDoctor.ejs", {
+    title: "Add Doctor",
     message: "",
-    title: "Homepage",
+  });
+});
+
+router.get("/viewAddDiagnosis", (request, response) => {
+  return response.render("diagnosis.ejs", {
+    title: "Add Diagnosis",
+    message: "",
   });
 });
 
@@ -66,6 +86,8 @@ router.get("/viewSearchPatient", (request, response) => {
     message: "",
   });
 });
+
+
 
 //search by ID/OHIP number
 router.post("/searchPatient", (request, response) => {
@@ -77,10 +99,7 @@ router.post("/searchPatient", (request, response) => {
       throw err;
     }
     if (result.length > 0) {
-      //return response.status(200).redirect('/editprofile')
-      // return response.status(200).send({ result });
-      console.log(result[0])
-      return response.render("patientDash-1.ejs", {
+      return response.render("patientDash1.ejs", {
         title: "View Patient",
         patientProfile: result[0],
         message: "",
@@ -159,7 +178,7 @@ router.put("/editprofile/:id", (request, response) => {
 });
 
 router.get("/viewBills", (request, response) => {
-  let query = `select  bill_number, patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
+  let query = `select bill_number, patients.ohip, first_name, last_name, phone_number, email, billing.amount from patients, billing where patients.ohip = billing.ohip;`;
   db.query(query, (err, result) => {
     if (err) throw err;
     return response.render("viewBills.ejs", {
@@ -169,6 +188,7 @@ router.get("/viewBills", (request, response) => {
     });
   });
 });
+
 router.get("/viewAddBill", (request, response) => {
   return response.render("addBills.ejs", {
     title: "Add Bill",
