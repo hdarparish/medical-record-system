@@ -1,108 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <title>EMR Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
     <!-- <link rel="stylesheet" href="/public/css/mainpagestyle.css"> -->
     <!-- <link rel="stylesheet" href="/public/css/stylesheet.css"> -->
     <link rel="stylesheet" href="/public/css/newstyle.css" />
-  </head>
+</head>
 
-  <body>
+<body>
     <!--wrapper-->
     <div class="wrapper">
-      <!--Header-->
-      <header>
-        <div class="left_area">
-          <a href="#"></a>
-          <h3>Hope <span>Clinic</span></h3>
-        </div>
-        <div class="right_area">
-          <a href="#" class="logout_btn">Logout</a>
-        </div>
-      </header>
-      <!--Sidemenu-->
-      <div class="sidebar">
-        <img src="/public/assets/image1.png" class="logo" alt="doctor symbol" />
+        <!--Header-->
+        <header>
+            <div class="left_area">
+                <a href="#"></a>
+                <h3>Hope <span>Clinic</span></h3>
+            </div>
+            <div class="right_area">
+                <a href="#" class="logout_btn">Logout</a>
+            </div>
+        </header>
+        <!--Sidemenu-->
+        <div class="sidebar">
+            <img src="/public/assets/image1.png" class="logo" alt="doctor symbol" />
 
-        <!-- Search form -->
+            <!-- Search form -->
 
-        <form class="form-inline" action="/searchPatient" method="POST">
-          <input
-            class="form-control form-control-sm mr-3 w-75"
-            maxlength="9"
-            type="text"
-            id="health_number"
-            name="health_number"
-            placeholder="Search - OHIP"
-            aria-label="Search"
-          />
-          <i class="fas fa-search" aria-hidden="true"></i>
-        </form>
+            <form class="form-inline" action="/searchPatient" method="POST">
+                <input class="form-control form-control-sm mr-3 w-75" maxlength="9" type="text" id="health_number"
+                    name="health_number" placeholder="Search - OHIP" aria-label="Search" />
+                <i class="fas fa-search" aria-hidden="true"></i>
+            </form>
 
-        <li class="item">
-          <a href="/mainpage" class="menu-btn">
-            <i class="fas fa-desktop"></i><span>Dashboard</span>
-          </a>
-        </li>
+            <li class="item">
+                <a href="/mainpage" class="menu-btn">
+                    <i class="fas fa-desktop"></i><span>Dashboard</span>
+                </a>
+            </li>
 
-        <li class="item" id="patient">
-          <a href="/viewSearchPatient" class="menu-btn">
-            <i class="fas fa-user"></i><span>Patient</span>
-          </a>
-          <div class="sub-menu">
-            <a href="/patientDash"
-              ><i class="fas fa-image"></i><span>Patient Proile</span></a
-            >
-          </div>
-        </li>
+            <li class="item" id="patient">
+                <a href="/viewSearchPatient" class="menu-btn">
+                    <i class="fas fa-user"></i><span>Patient</span>
+                </a>
+                <div class="sub-menu">
+                    <a href="/patientDash"><i class="fas fa-image"></i><span>Patient Proile</span></a>
+                </div>
+            </li>
 
-        <li class="item" id="doctor">
-          <a href="/viewDoctors" class="menu-btn">
-            <i class="fas fa-stethoscope"></i
-            ><span>Doctor<i class="fas fa-chevron-down drop-down"></i></span>
-          </a>
+            <li class="item" id="doctor">
+                <a href="/viewDoctors" class="menu-btn">
+                    <i class="fas fa-stethoscope"></i><span>Doctor</span>
+                </a>
 
-          <div class="sub-menu">
-            <a href="/viewDoctors"
-              ><i class="fas fa-envelope"></i><span>View Doctor</span></a
-            >
-            <a href="/doctorObservation"
-              ><i class="fas fa-envelope-square"></i
-              ><span>Doctor Observation</span></a
-            >
-          </div>
-        </li>
-        <li class="item" id="observation">
-          <a href="/viewAddDiagnosis" class="menu-btn"
-            ><i class="far fa-calendar-alt"></i><span>Doctor Observation</span>
-          </a>
-        </li>
-        <li class="item" id="appointment">
-          <a href="/viewAppointment" class="menu-btn"
-            ><i class="far fa-calendar-alt"></i><span>Appointment</span>
-          </a>
-        </li>
-        <!--  <a href="/laboratory"><i class="fas fa-microscope"></i><span>Laboratory</span></a>
+                <div class="sub-menu">
+                    <a href="/viewDoctors"><i class="fas fa-envelope"></i><span>View Doctor</span></a>
+                    <a href="/doctorObservation"><i class="fas fa-envelope-square"></i><span>Doctor Observation</span>
+                    </a>
+                </div>
+            </li>
+            <li class="item" id="observation">
+                <a href="/viewAddDiagnosis" class="menu-btn"><i class="fas fa-file-prescription"></i><span>Doctor
+                        Observation</span>
+                </a>
+            </li>
+            <li class="item" id="appointment">
+                <a href="/viewAppointment" class="menu-btn"><i class="far fa-calendar-alt"></i><span>Appointment</span>
+                </a>
+            </li>
+            <!--  <a href="/laboratory"><i class="fas fa-microscope"></i><span>Laboratory</span></a>
         <a href="/medicalrecords"><i class="fas fa-file-medical"></i><span>Medical Records</span></a>-->
 
-        <li class="item" id="billing">
-          <a href="/viewBills" class="menu-btn"
-            ><i class="fas fa-file-invoice-dollar"></i><span>Billing</span>
-          </a>
-        </li>
-      </div>
+            <li class="item" id="billing">
+                <a href="/viewBills" class="menu-btn"><i class="fas fa-file-invoice-dollar"></i><span>Billing</span>
+                </a>
+            </li>
+        </div>
     </div>
-  </body>
+</body>
+
 </html>
