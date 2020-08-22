@@ -1,14 +1,17 @@
 <%- include ('./header.ejs') -%>
     <div class="content"></div>
     <section class="features"> 
-        <figure>
-                                
+        <figure>                   
             <a href="/viewSearchPatient"><img src="/public/assets/user.jpg" alt="patient image">
-            <figcaption><a href="/searchPatient">Patient Details</a></figcaption>
+            <figcaption><a href="/viewSearchPatient">Patient</a></figcaption>
         </figure>
         <figure>
-            <a href="doctor.html"><img src="/public/assets/doctor.jpg" alt="doctor image">
-            <figcaption><a href="doctor.html">Doctor Details</a></figcaption>
+            <a href="/viewDoctors"><img src="/public/assets/doctor.jpg" alt="doctor image">
+            <figcaption><a href="/viewDoctors">Doctor</a></figcaption>
+        </figure>
+        <figure>
+            <a href="/viewAddDiagnosis"><img src="/public/assets/prescription.png" alt="prescription image">
+            <figcaption><a href="/viewAddDiagnosis">Doctor Observation</a></figcaption>
         </figure>
         <figure>
             <a href="/viewAppointment"><img src="/public/assets/appointment.png" alt="appointment image">
@@ -16,7 +19,7 @@
         </figure>
         <figure>
             <a href="/viewBills"><img src="/public/assets/billing.jpg" alt="billing">
-            <figcaption><a href="/viewBill">Billing</a></figcaption>
+            <figcaption><a href="/viewBills">Billing</a></figcaption>
         </figure>
 
     </section>
