@@ -54,7 +54,7 @@ router.get("/mainpage", (request, response) => {
 });
 
 router.get("/viewdoctor", (request, response) => {
-  response.render("doctor.ejs", {
+  response.render("viewDoctors.ejs", {
     message: "",
     title: "Homepage",
   });
