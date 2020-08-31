@@ -1,21 +1,20 @@
 import express, { request, response } from "express";
-import db from "./db.js";
+import * as db from "./db.js";
 
 const router = express.Router();
 
 router.get("/", (request, response) => {
   let message = "";
   response.render("login.ejs", {
-    message: message,
+    message: "",
     pageId: "Login",
     title: "Login",
   });
 });
 
 router.get("/patient", (request, response) => {
-  let message = "";
   response.render("patient.ejs", {
-    message: message,
+    message: "",
     pageId: "welcome",
     title: "Welcome",
   });
@@ -23,26 +22,14 @@ router.get("/patient", (request, response) => {
 
 //User login
 router.post("/login", (request, response) => {
-  let username = request.body.username;
   let password = request.body.password;
-  try {
-    if (request.method == "POST") {
-      let query = "Select * from users where username = ?";
-      db.query(query, [username], (err, result) => {
-        if (err) throw err;
-        //check if there is a result from the query
-        if (result.length > 0) {
-          //check if the password matches the one entered
-          if (password == result[0].password) {
-            return response.status(200).redirect("/mainpage");
-          }
-        }
-        return response.status(401).redirect("/");
-      });
+  db.userLogin(request.body).then((result) => {
+    //check if the password matches the one entered
+    if (password == result[0].password) {
+      return response.status(200).redirect("/mainpage");
     }
-  } catch (err) {
-    console.error(err);
-  }
+    return response.status(401).redirect("/");
+  });
 });
 
 router.get("/mainpage", (request, response) => {
@@ -53,10 +40,7 @@ router.get("/mainpage", (request, response) => {
 });
 
 router.get("/viewdoctors", (request, response) => {
-  let query = `select * from doctors`;
-
-  db.query(query, (err, result) => {
-    if (err) throw err;
+  db.viewList("doctors").then((result) => {
     return response.render("viewDoctors.ejs", {
       title: "View Doctors",
       doctorProfile: result,
