@@ -20,6 +20,10 @@ router.post("/login", async (request, response) => {
       if (result.length > 0) {
         //check if the password matches the one entered
         if (password == result[0].password) {
+          console.log(result[0])
+          if(result[0].isAdmin){
+            return response.status(200).redirect("/mainpageAdmin");
+          }
           return response.status(200).redirect("/mainpage");
         }
       }
@@ -29,6 +33,20 @@ router.post("/login", async (request, response) => {
     return response.status(401).redirect("/");
   }
 });
+
+router.get("/mainpageAdmin", (request, response) => {
+  db.getPatients().then((result) => {
+    if (result.length > 0) {
+  response.render("adminDash.ejs", {
+    message: "",
+    title: "Homepage",
+    patients: result,
+    patient:""
+  });
+}
+});
+});
+
 
 router.get("/mainpage", (request, response) => {
   response.render("mainpage.ejs", {
@@ -54,10 +72,12 @@ router.get("/viewSearchPatient", (request, response) => {
 
 //search by ID/OHIP number
 router.post("/searchPatient", (request, response) => {
-  let id = request.body.health_number;
-
+  let id = request.body.patientId;
+  let message = "patient found"
   db.searchPatient(id).then((result) => {
     if (result.length > 0) {
+      return response.send({message})
+      /*
       db.searchPatientHistory(id).then((medicalResult) => {
         return response.render("patientDash1.ejs", {
           title: "View Patient",
@@ -66,6 +86,7 @@ router.post("/searchPatient", (request, response) => {
           message: "",
         });
       });
+      */
     } else {
       return response.render("addPatient.ejs", {
         title: "Add Patient",

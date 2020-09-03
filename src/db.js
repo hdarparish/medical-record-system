@@ -71,6 +71,15 @@ const deleteDoctor = async (doctorId) => {
   await query(`Delete from doctors where doctor_id = '${doctorId}'`);
 };
 
+const getPatients = async() => {
+  try {
+    const queryResult = await query(`Select * from patients`);
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 const searchPatient = async (patientId) => {
   try {
     const queryResult = await query(
@@ -196,6 +205,7 @@ export {
   addDoctors,
   editDoctor,
   deleteDoctor,
+  getPatients,
   searchPatient,
   patientHistory,
   addPatient,
