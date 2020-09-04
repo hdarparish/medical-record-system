@@ -1,0 +1,47 @@
+<%- include ('./adminHeader.ejs') -%>
+
+<div class="container">
+        <h3>Edit Doctor Profile</h3>
+        <form class="form-inline" method="POST" action="/admin/searchDoctor">
+            <div class="form-group mx-sm-0 mb-2">
+                <label for="doctorId" class="sr-only">Doctor ID</label>
+                <input type="text" class="form-control" id="doctorId" name="doctorId" placeholder="Doctor ID" maxlength="5"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+        </form>
+        
+        <form method="POST" action="/admin/editExistingDoctor">
+            <label for="patientId">Doctor ID</label>
+            <input type="text" class="form-control" id="doctorId" name="doctorId" placeholder="Doctor ID" value="<%= doctor.doctor_id %>" readonly>
+
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" value="<%= doctor.first_name %>" required>
+
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" value="<%= doctor.last_name %>" required>
+
+            <label for="specialization">Specialization</label>
+            <input type="text" class="form-control" id="specialization" name="specialization" value="<%= doctor.specialization %>"  required>
+    
+            <label for="department">Department</label>
+            <input type="text" class="form-control" id="department" name="department" value="<%= doctor.department %>" required>
+
+            <input type="submit" class="btn btn-primary" value="Save" id="submit_btn">
+        </form>
+
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
