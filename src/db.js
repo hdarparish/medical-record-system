@@ -34,7 +34,7 @@ const userLogin = async (reqBody) => {
 
 const getDoctors = async () => {
   try {
-    const queryResult = await query(`Select * from doctors`);
+    const queryResult = await query(`Select * from doctors Order By last_name`);
     return queryResult;
   } catch (err) {
     console.error(err);
@@ -43,27 +43,40 @@ const getDoctors = async () => {
 
 const addDoctors = async (reqBody) => {
   try {
-    let id = reqBody.doctor_id;
-    let firstName = reqBody.first_name;
-    let lastName = reqBody.last_name;
+    let id = reqBody.doctorId;
+    let firstName = reqBody.firstName;
+    let lastName = reqBody.lastName;
     let specialization = reqBody.specialization;
     let department = reqBody.department;
 
     await query(
-      `INSERT INTO doctors VALUES ('${id}','${firstName}','${lastName}, '${specialization}','${department}')`
+      `INSERT INTO doctors VALUES (${id},'${firstName}','${lastName}', '${specialization}', '${department}')`
     );
   } catch (err) {
     console.error(err);
   }
 };
 
+const searchDoctor = async (doctorId) => {
+  try {
+    const queryResult = await query(
+      `Select * from doctors where doctor_id = '${doctorId}'`
+    );
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const editDoctor = async (reqBody) => {
-  let firstName = reqBody.first_name;
-  let lastName = reqBody.last_name;
+  let doctorId = reqBody.doctorId;
+  let firstName = reqBody.firstName;
+  let lastName = reqBody.lastName;
   let specialization = reqBody.specialization;
   let department = reqBody.department;
+  console.log(reqBody)
   await query(
-    `UPDATE health_system.doctors SET first_name= '${firstName}', last_name= '${lastName}', specialization= '${specialization}', department= '${department}'`
+    `UPDATE health_system.doctors SET first_name= '${firstName}', last_name= '${lastName}', specialization= '${specialization}', department= '${department}' where doctor_id = ${doctorId}`
   );
 };
 
@@ -102,11 +115,11 @@ const addPatient = async (reqBody) => {
   let phoneNumber = reqBody.phone_number;
 
   await query(`INSERT INTO health_system.patients (ohip, first_name, last_name, phone_number, dateof_birth, email, gender, address)
-   VALUES('${id}','${firstName}','${lastName}','${birthDay}','${address}','${gender}','${email}','${phoneNumber}')`);
+   VALUES('${id}','${firstName}','${lastName}','${phoneNumber}', '${birthDay}','${email}','${gender}', '${address}')`);
 };
 
 const editPatient = async (reqBody) => {
-  let id = reqBody.id;
+  let id = reqBody.patientId;
   let firstName = reqBody.firstName;
   let lastName = reqBody.lastName;
   let birthDay = reqBody.birthDay;
@@ -117,6 +130,7 @@ const editPatient = async (reqBody) => {
   await query(
     `UPDATE health_system.patients SET first_name= '${firstName}', last_name= '${lastName}', phone_number= '${phoneNumber}', dateof_birth= '${birthDay}', email= '${email}', gender= '${gender}', address= '${address}' WHERE ohip= '${id}'`
   );
+
 };
 
 const deletePatient = async (patientId) => {
@@ -133,6 +147,70 @@ const patientHistory = async (patientId) => {
     console.error(err);
   }
 };
+
+const getUsers = async () => {
+  try {
+    const queryResult = await query(
+      `Select * from users`
+    );
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const searchUsers = async (username) => {
+  try {
+    const queryResult = await query(
+      `Select * from users where username = '${username}'`
+    );
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const addUsers = async (reqBody) => {
+  let userName = reqBody.userName;
+  let email = reqBody.email;
+  let password = reqBody.password;
+  let isAdmin = reqBody.credential;
+  try {
+    const queryResult = await query(
+      `Insert Into users Values ('${userName}', '${email}', '${password}', '${isAdmin}')`
+    );
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const editUsers = async (reqBody) => {
+  let userName = reqBody.userName;
+  let email = reqBody.email;
+  let password = reqBody.password;
+  let isAdmin = reqBody.credential;
+
+  try{
+    await query(
+      `UPDATE users SET email = '${email}', password = '${password}', isAdmin = '${isAdmin}' where username = '${userName}'`
+    );
+  }
+  catch(err){
+    console.error(err);
+  }
+} 
+
+
+const deleteUsers = async (username) => {
+  try{
+    await query(
+      `Delete from users where username = '${username}'`
+    );
+  }catch(err){
+    console.error(err);
+  }
+} 
 
 const addDiagnosis = async (reqBody) => {
   let doctorId = reqBody.doctor_id;
@@ -203,6 +281,7 @@ export {
   userLogin,
   getDoctors,
   addDoctors,
+  searchDoctor,
   editDoctor,
   deleteDoctor,
   getPatients,
@@ -211,6 +290,11 @@ export {
   addPatient,
   editPatient,
   deletePatient,
+  getUsers,
+  searchUsers,
+  addUsers,
+  editUsers,
+  deleteUsers,
   addDiagnosis,
   getBills,
   addBills,
