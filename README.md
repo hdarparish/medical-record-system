@@ -61,7 +61,18 @@ CREATE TABLE IF NOT EXISTS billing (
 	foreign key (doctor_id) references doctors (doctor_id)
 )
 
-
+CREATE TABLE IF NOT EXISTS medical_observation (
+	observation_id int(9)NOT NULL auto_increment,
+	doctor_id int(5) not null,
+	ohip int(9) NOT null,
+	observation_date datetime not null,
+	observation varchar(255),
+	laboratory varchar(255),
+	prescription varchar(255),
+	PRIMARY KEY (observation_id),
+	foreign key (ohip) references patients (ohip),
+	foreign key (doctor_id) references doctors (doctor_id)
+)
 ```
 
 ### Populate Database
