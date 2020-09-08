@@ -1,72 +1,118 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
 
     <title>Admin Page</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Hope Clinic</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+      <a class="navbar-brand" href="#">Hope Clinic</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Patients
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/viewPatients">View All</a>
+              <a class="dropdown-item" href="/viewAddPatient">Add Patient</a>
+              <a class="dropdown-item" href="/viewEditPatient">Edit Patient</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/viewDeletePatient"
+                >Delete Patient</a
+              >
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Users
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/admin/viewUsers">View All</a>
+              <a class="dropdown-item" href="/admin/addUsers">Add User</a>
+              <a class="dropdown-item" href="/admin/editUsers">Edit User</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/admin/viewDeleteUsers"
+                >Delete User</a
+              >
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Doctors
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/admin/viewDoctors">View All</a>
+              <a class="dropdown-item" href="/admin/addDoctor">Add Doctor</a>
+              <a class="dropdown-item" href="/admin/editDoctor">Edit Doctor</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/admin/viewDeleteDoctor"
+                >Delete Doctor</a
+              >
+            </div>
+          </li>
+        </ul>
+      </div>
+      <form class="form-inline my-2 my-lg-0" method="GET" action="/logout">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Logout
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Patients
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/viewPatients">View All</a>
-                        <a class="dropdown-item" href="/viewAddPatient">Add Patient</a>
-                        <a class="dropdown-item" href="/viewEditPatient">Edit Patient</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/viewDeletePatient">Delete Patient</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Users
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/admin/viewUsers">View All</a>
-                        <a class="dropdown-item" href="/admin/addUsers">Add User</a>
-                        <a class="dropdown-item" href="/admin/editUsers">Edit User</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/admin/viewDeleteUsers">Delete User</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Doctors
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/admin/viewDoctors">View All</a>
-                        <a class="dropdown-item" href="/admin/addDoctor">Add Doctor</a>
-                        <a class="dropdown-item" href="/admin/editDoctor">Edit Doctor</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/admin/viewDeleteDoctor">Delete Doctor</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <form class="form-inline my-2 my-lg-0" method="POST" action="/logout">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-        </form>
+      </form>
     </nav>
+  </body>
+</html>

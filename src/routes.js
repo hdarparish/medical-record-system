@@ -1,10 +1,10 @@
 import express, { request, response } from "express";
 import * as db from "./db.js";
+import * as verifySession from "./verifySession";
 
 const router = express.Router();
 
 router.get("/", (request, response) => {
-  let message = "";
   response.render("login.ejs", {
     message: "",
     pageId: "Login",
@@ -13,14 +13,16 @@ router.get("/", (request, response) => {
 });
 
 //User login
-router.post("/login", async (request, response) => {
+router.post("/login", async (request, response, next) => {
   let password = request.body.password;
   try {
     db.userLogin(request.body).then((result) => {
       if (result.length > 0) {
         //check if the password matches the one entered
         if (password == result[0].password) {
-          console.log(result[0]);
+          request.session.userId = result[0].isAdmin;
+          request.session.user = result[0];
+          console.log(request.session.userId);
           if (result[0].isAdmin) {
             return response.status(200).redirect("/mainpageAdmin");
           }
@@ -33,23 +35,27 @@ router.post("/login", async (request, response) => {
     return response.status(401).redirect("/");
   }
 });
-
-router.get("/mainpageAdmin", (request, response) => {
-  response.render("adminDash.ejs", {
-    message: "",
-    title: "Homepage",
-    patient: "",
-  });
-});
-
-router.get("/mainpage", (request, response) => {
+//Get the Admin page
+router.get(
+  "/admin/mainpage",
+  verifySession.admin,
+  (request, response, next) => {
+    response.render("adminDash.ejs", {
+      message: "",
+      title: "Homepage",
+      patient: "",
+    });
+  }
+);
+//get the regular page
+router.get("/mainpage", verifySession.user, (request, response) => {
   response.render("mainpage.ejs", {
     message: "",
     title: "Homepage",
   });
 });
 
-router.get("/patient", (request, response) => {
+router.get("/patient", verifySession.user, (request, response) => {
   response.render("patient.ejs", {
     message: "",
     pageId: "welcome",
@@ -57,7 +63,7 @@ router.get("/patient", (request, response) => {
   });
 });
 
-router.get("/viewPatients", (request, response) => {
+router.get("/viewPatients", verifySession.admin, (request, response) => {
   db.getPatients().then((result) => {
     response.render("adminViewPatients.ejs", {
       message: "",
@@ -68,7 +74,7 @@ router.get("/viewPatients", (request, response) => {
   });
 });
 
-router.get("/viewSearchPatient", (request, response) => {
+router.get("/viewSearchPatient", verifySession.user, (request, response) => {
   return response.render("searchPatient.ejs", {
     title: "Search Patient",
     message: "",
@@ -76,7 +82,7 @@ router.get("/viewSearchPatient", (request, response) => {
 });
 
 //search by ID/OHIP number
-router.post("/searchPatient", (request, response) => {
+router.post("/searchPatient", verifySession.user, (request, response) => {
   let id = request.body.patientId;
   db.searchPatient(id).then((result) => {
     if (result.length > 0) {
@@ -107,7 +113,7 @@ router.post("/searchPatient", (request, response) => {
   });
 });
 
-router.post("/addNewPatient", (request, response) => {
+router.post("/addNewPatient", verifySession.user, (request, response) => {
   let id = request.body.ohip_number;
 
   try {
@@ -119,7 +125,7 @@ router.post("/addNewPatient", (request, response) => {
   }
 });
 
-router.get("/viewAddPatient", (request, response) => {
+router.get("/viewAddPatient", verifySession.admin, (request, response) => {
   response.render("adminAddPatient.ejs", {
     message: "",
     patientProfile: "",
@@ -128,7 +134,7 @@ router.get("/viewAddPatient", (request, response) => {
   });
 });
 
-router.get("/viewEditPatient", (request, response) => {
+router.get("/viewEditPatient", verifySession.admin, (request, response) => {
   response.render("adminEditPatient.ejs", {
     message: "",
     patientProfile: "",
@@ -137,13 +143,13 @@ router.get("/viewEditPatient", (request, response) => {
   });
 });
 
-router.post("/editPatient", (request, response) => {
+router.post("/editPatient", verifySession.admin, (request, response) => {
   db.editPatient(request.body).then(() => {
     return response.status(200).redirect("/viewPatients");
   });
 });
 
-router.get("/viewDeletePatient", (request, response) => {
+router.get("/viewDeletePatient", verifySession.admin, (request, response) => {
   response.render("adminDeletePatient.ejs", {
     message: "",
     patientProfile: "",
@@ -152,7 +158,7 @@ router.get("/viewDeletePatient", (request, response) => {
   });
 });
 
-router.post("/deletePatient", (request, response) => {
+router.post("/deletePatient", verifySession.admin, (request, response) => {
   let patientId = request.body.patientId;
   db.deletePatient(patientId).then(() => {
     //return response.status(200).send({ message: "Profile Updated" });
@@ -164,7 +170,7 @@ router.get("/viewdoctors", (request, response) => {
   db.getDoctors().then((result) => {
     //check if admin and route to page
     //return response.render("viewDoctors.ejs", {
-      return response.render("viewDoctors.ejs", {
+    return response.render("viewDoctors.ejs", {
       title: "View Doctors",
       doctorProfile: result,
       message: "",
@@ -179,7 +185,7 @@ router.get("/viewAddDoctor", (request, response) => {
   });
 });
 
-router.get("/admin/viewUsers", (request, response) => {
+router.get("/admin/viewUsers", verifySession.admin, (request, response) => {
   db.getUsers().then((result) => {
     return response.render("adminViewUsers.ejs", {
       users: result,
@@ -189,14 +195,14 @@ router.get("/admin/viewUsers", (request, response) => {
   });
 });
 
-router.get("/admin/addUsers", (request, response) => {
+router.get("/admin/addUsers", verifySession.admin, (request, response) => {
   return response.render("adminAddUsers.ejs", {
     title: "View Users",
     message: "",
   });
 });
 
-router.post("/admin/addNewUser", (request, response) => {
+router.post("/admin/addNewUser", verifySession.admin, (request, response) => {
   try {
     db.addUsers(request.body).then(() => {
       return response.redirect("/admin/viewUsers");
@@ -206,7 +212,7 @@ router.post("/admin/addNewUser", (request, response) => {
   }
 });
 
-router.get("/admin/editUsers", (request, response) => {
+router.get("/admin/editUsers", verifySession.admin, (request, response) => {
   return response.render("adminEditUsers.ejs", {
     title: "View Users",
     users: "",
@@ -214,45 +220,52 @@ router.get("/admin/editUsers", (request, response) => {
   });
 });
 
-router.post("/admin/searchUser", (request,response) => {
+router.post("/admin/searchUser", verifySession.admin, (request, response) => {
   let username = request.body.username;
   db.searchUsers(username).then((result) => {
     //return response.render("adminEditUsers.ejs", {
-      return response.render("adminDeleteUsers.ejs", {
+    return response.render("adminDeleteUsers.ejs", {
       title: "View Users",
       users: result[0],
       message: "",
     });
-  })
-})
-
-router.post("/admin/editExitstingUsers", (request, response) => {
-  db.editUsers(request.body).then(() => {
-    return response.status(200).redirect("/admin/viewUsers")
-  })
-});
-
-
-router.get("/admin/viewDeleteUsers", (request, response) => {
-  return response.render("adminDeleteUsers.ejs", {
-    title: "Delete User",
-    users: "",
-    message: "",
   });
 });
+
+router.post(
+  "/admin/editExitstingUsers",
+  verifySession.admin,
+  (request, response) => {
+    db.editUsers(request.body).then(() => {
+      return response.status(200).redirect("/admin/viewUsers");
+    });
+  }
+);
+
+router.get(
+  "/admin/viewDeleteUsers",
+  verifySession.admin,
+  (request, response) => {
+    return response.render("adminDeleteUsers.ejs", {
+      title: "Delete User",
+      users: "",
+      message: "",
+    });
+  }
+);
 //change the params, something different then above
-router.post("/admin/deleteUsers", (request, response) => {
+router.post("/admin/deleteUsers", verifySession.admin, (request, response) => {
   let username = request.body.username;
   db.deleteUsers(username).then(() => {
-    return response.status(200).redirect("/admin/viewUsers")
-  })
+    return response.status(200).redirect("/admin/viewUsers");
+  });
 });
 
-router.get("/admin/viewDoctors", (request, response) => {
+router.get("/admin/viewDoctors", verifySession.admin, (request, response) => {
   db.getDoctors().then((result) => {
     //check if admin and route to page
     //return response.render("viewDoctors.ejs", {
-      return response.render("adminViewDoctors.ejs", {
+    return response.render("adminViewDoctors.ejs", {
       title: "View Doctors",
       doctors: result,
       message: "",
@@ -261,7 +274,7 @@ router.get("/admin/viewDoctors", (request, response) => {
 });
 
 //The add doctor page
-router.get("/admin/addDoctor", (request, response) => {
+router.get("/admin/addDoctor", verifySession.admin, (request, response) => {
   return response.render("adminAddDoctor.ejs", {
     title: "Add Doctor",
     message: "",
@@ -269,62 +282,72 @@ router.get("/admin/addDoctor", (request, response) => {
 });
 
 //submit the add doctor form
-router.post("/admin/addNewDoctor", (request, response) => {
+router.post("/admin/addNewDoctor", verifySession.admin, (request, response) => {
   db.addDoctors(request.body).then(() => {
     return response.redirect("/admin/viewDoctors");
   });
 });
 
 //get the edit doctor page
-router.get("/admin/editDoctor", (request,response) => {
+router.get("/admin/editDoctor", verifySession.admin, (request, response) => {
   return response.render("adminEditDoctor.ejs", {
     title: "Edit Doctor",
     doctor: "",
     message: "",
   });
-})
+});
 //submit the doctor ID to fill out the doctor profile
-router.post("/admin/searchDoctor", (request,response) => {
+router.post("/admin/searchDoctor", verifySession.admin, (request, response) => {
   let doctorId = request.body.doctorId;
   db.searchDoctor(doctorId).then((result) => {
-   // return response.render("adminEditDoctor.ejs", { This is used by 2 different pages, figure out a way to implement
-   return response.render("adminDeleteDoctor.ejs", {
+    // return response.render("adminEditDoctor.ejs", { This is used by 2 different pages, figure out a way to implement
+    return response.render("adminDeleteDoctor.ejs", {
       title: "Remove Doctor",
       doctor: result[0],
       message: "",
     });
-  })
-})
-
-router.post("/admin/editExistingDoctor", (request,response) => {
-  db.editDoctor(request.body).then(() => {
-    return response.redirect("/admin/viewDoctors");
   });
-})
+});
 
-router.get("/admin/viewDeleteDoctor", (request,response) => {
-  return response.render("adminDeleteDoctor.ejs", {
-    title: "Remove Doctor",
-    doctor: "",
-    message: "",
-  });
-})
+router.post(
+  "/admin/editExistingDoctor",
+  verifySession.admin,
+  (request, response) => {
+    db.editDoctor(request.body).then(() => {
+      return response.redirect("/admin/viewDoctors");
+    });
+  }
+);
 
-router.post("/admin/deleteDoctor", (request,response) => {
+router.get(
+  "/admin/viewDeleteDoctor",
+  verifySession.admin,
+  (request, response) => {
+    return response.render("adminDeleteDoctor.ejs", {
+      title: "Remove Doctor",
+      doctor: "",
+      message: "",
+    });
+  }
+);
+
+router.post("/admin/deleteDoctor", verifySession.admin, (request, response) => {
   let doctorId = request.body.doctorId;
   db.deleteDoctor(doctorId).then(() => {
     return response.redirect("/admin/viewDoctors");
-  })
-})
+  });
+});
 
-router.get("/viewAddDiagnosis", (request, response) => {
+//Regular user routes
+//get diagnosis page
+router.get("/viewAddDiagnosis", verifySession.user, (request, response) => {
   return response.render("diagnosis.ejs", {
     title: "Add Diagnosis",
     message: "",
   });
 });
-
-router.post("/AddDiagnosis", (request, response) => {
+//add diagnosis to patient
+router.post("/AddDiagnosis", verifySession.user, (request, response) => {
   try {
     db.addDiagnosis(request.body).then(() => {
       return response.redirect("/viewSearchPatient");
@@ -333,8 +356,8 @@ router.post("/AddDiagnosis", (request, response) => {
     console.error(err);
   }
 });
-
-router.get("/viewBills", (request, response) => {
+//get the bills page
+router.get("/viewBills", verifySession.user, (request, response) => {
   try {
     db.getBills().then((result) => {
       return response.render("viewBills.ejs", {
@@ -347,15 +370,15 @@ router.get("/viewBills", (request, response) => {
     console.error(err);
   }
 });
-
-router.get("/viewAddBill", (request, response) => {
+//get the add bill page
+router.get("/viewAddBill", verifySession.user, (request, response) => {
   return response.render("addBills.ejs", {
     title: "Add Bill",
     message: "",
   });
 });
-
-router.post("/addBill", (request, response) => {
+//post the bill entered to database
+router.post("/addBill", verifySession.user, (request, response) => {
   try {
     db.addBills(request.body).then(() => {
       return response.redirect("/viewBills");
@@ -364,8 +387,8 @@ router.post("/addBill", (request, response) => {
     console.error(err);
   }
 });
-
-router.get("/viewAppointment", (request, response) => {
+//get the appointments page
+router.get("/viewAppointment", verifySession.user, (request, response) => {
   try {
     db.getAppointments().then((result) => {
       return response.render("viewAppointment.ejs", {
@@ -378,15 +401,15 @@ router.get("/viewAppointment", (request, response) => {
     console.error(err);
   }
 });
-
-router.get("/viewaddAppointment", (request, response) => {
+//get the add appointment page
+router.get("/viewaddAppointment", verifySession.user, (request, response) => {
   return response.render("addAppointment.ejs", {
     title: "Add Appointment",
     message: "",
   });
 });
-
-router.post("/addAppointment", (request, response) => {
+//post the appointment to the database
+router.post("/addAppointment", verifySession.user, (request, response) => {
   try {
     db.addAppointment(request.body).then(() => {
       return response.redirect("/viewAppointment");
@@ -395,8 +418,9 @@ router.post("/addAppointment", (request, response) => {
     console.error(err);
   }
 });
-
-router.post("/logout", (request, response) => {
+//terminate session and redirect to login
+router.get("/logout", (request, response) => {
+  request.session.destroy();
   return response.status(201).redirect("/");
 });
 
