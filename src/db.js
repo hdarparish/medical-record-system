@@ -1,11 +1,14 @@
 import mysql from "mysql";
 import util from "util";
+import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+dotenv.config();
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "nodeclient",
-  password: "123456",
-  database: "health_System",
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
 });
 
 const query = util.promisify(db.query).bind(db);
@@ -172,11 +175,12 @@ const addUsers = async (reqBody) => {
   let email = reqBody.email;
   let password = reqBody.password;
   let isAdmin = reqBody.credential;
+  let saltRounds = Number(process.env.BCRYPT_ROUNDS);
   try {
-    const queryResult = await query(
-      `Insert Into users Values ('${userName}', '${email}', '${password}', '${isAdmin}')`
+    let passwordHash = await bcrypt.hash(password, saltRounds);
+    await query(
+      `Insert Into users Values ('${userName}', '${email}', '${passwordHash}', '${isAdmin}')`
     );
-    return queryResult;
   } catch (err) {
     console.error(err);
   }

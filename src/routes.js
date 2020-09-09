@@ -1,7 +1,10 @@
 import express, { request, response } from "express";
+import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 import * as db from "./db.js";
 import * as verifySession from "./verifySession";
 
+dotenv.config();
 const router = express.Router();
 
 router.get("/", (request, response) => {
@@ -18,18 +21,21 @@ router.post("/login", async (request, response, next) => {
   try {
     db.userLogin(request.body).then((result) => {
       if (result.length > 0) {
-        //check if the password matches the one entered
-        if (password == result[0].password) {
-          request.session.userId = result[0].isAdmin;
-          request.session.user = result[0];
-          console.log(request.session.userId);
-          if (result[0].isAdmin) {
-            return response.status(200).redirect("/mainpageAdmin");
+        //check if the password entered matches the one in the DB
+        bcrypt.compare(password, result[0].password).then((hashResult) => {
+          if (hashResult) {
+            request.session.userId = result[0].isAdmin;
+            //check if the user is admin
+            if (result[0].isAdmin) {
+              return response.status(200).redirect("/admin/mainpage");
+            }
+            //if the user is not admin then redirect
+            return response.status(200).redirect("/mainpage");
           }
-          return response.status(200).redirect("/mainpage");
-        }
+          //if the password is wrong but the account exists
+          return response.status(401).redirect("/");
+        });
       }
-      return response.status(401).redirect("/");
     });
   } catch (err) {
     return response.status(401).redirect("/");

@@ -1,10 +1,13 @@
 import express from "express";
 import routes from "./src/routes.js";
-import ejs from "ejs";
 import session from "express-session";
+import dotenv from "dotenv";
 
 const app = express();
-const port = 3000;
+
+dotenv.config();
+
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 // parse json
@@ -13,10 +16,10 @@ app.use(express.json());
 app.set("trust proxy", 1); // trust first proxy
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 600000 },
   })
 );
 app.use("/public", express.static("public"));
