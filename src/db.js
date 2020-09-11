@@ -152,7 +152,9 @@ const patientHistory = async (patientId) => {
 
 const getUsers = async () => {
   try {
-    const queryResult = await query(`Select * from users`);
+    const queryResult = await query(
+      `Select username, email, isAdmin from users`
+    );
     return queryResult;
   } catch (err) {
     console.error(err);

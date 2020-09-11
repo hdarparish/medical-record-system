@@ -19,6 +19,7 @@ router.get("/", (request, response) => {
 router.post("/login", async (request, response, next) => {
   let password = request.body.password;
   try {
+    /*
     db.userLogin(request.body).then((result) => {
       if (result.length > 0) {
         //check if the password entered matches the one in the DB
@@ -27,7 +28,8 @@ router.post("/login", async (request, response, next) => {
             request.session.userId = result[0].isAdmin;
             //check if the user is admin
             if (result[0].isAdmin) {
-              return response.status(200).redirect("/admin/mainpage");
+              //return response.status(200).redirect("/admin/mainpage");
+              return response.status(200).send({ data: "Success" });
             }
             //if the user is not admin then redirect
             return response.status(200).redirect("/mainpage");
@@ -35,10 +37,38 @@ router.post("/login", async (request, response, next) => {
           //if the password is wrong but the account exists
           return response.status(401).redirect("/");
         });
+
+      } else {
+        return response.status(401).redirect("/");
       }
-    });
+    });*/
+    let searchResult = await db.userLogin(request.body);
+    if (searchResult.length > 0) {
+      //check if the password entered matches the one in the DB
+      let hashResult = await bcrypt.compare(password, searchResult[0].password);
+      if (hashResult) {
+        // request.session.userId = result[0].isAdmin;
+        //check if the user is admin
+        if (searchResult[0].isAdmin) {
+          //return response.status(200).redirect("/admin/mainpage");
+          return response.status(200).send({ data: "Success" });
+        }
+        //if the user is not admin then redirect
+        return response.status(200).redirect("/mainpage");
+      }
+      //if the password is wrong but the account exists
+      return response
+        .status(401)
+        .send({ message: "incorrect credentials provided" });
+    } else {
+      return response
+        .status(401)
+        .send({ message: "incorrect credentials provided" });
+    }
   } catch (err) {
-    return response.status(401).redirect("/");
+    return response
+      .status(401)
+      .send({ message: "incorrect credentials provided" });
   }
 });
 //Get the Admin page
@@ -191,24 +221,25 @@ router.get("/viewAddDoctor", (request, response) => {
   });
 });
 
-router.get("/admin/viewUsers", verifySession.admin, (request, response) => {
+router.get("/admin/viewUsers", (request, response) => {
   db.getUsers().then((result) => {
-    return response.render("adminViewUsers.ejs", {
-      users: result,
-      title: "View Users",
-      message: "",
-    });
+    /*return response.render("adminViewUsers.ejs", {
+        users: result,
+        title: "View Users",
+        message: "",
+       });*/
+    return response.status(200).send(result);
   });
 });
 
-router.get("/admin/addUsers", verifySession.admin, (request, response) => {
+router.get("/admin/addUsers", (request, response) => {
   return response.render("adminAddUsers.ejs", {
     title: "View Users",
     message: "",
   });
 });
 
-router.post("/admin/addNewUser", verifySession.admin, (request, response) => {
+router.post("/admin/addNewUser", (request, response) => {
   try {
     db.addUsers(request.body).then(() => {
       return response.redirect("/admin/viewUsers");
@@ -218,7 +249,7 @@ router.post("/admin/addNewUser", verifySession.admin, (request, response) => {
   }
 });
 
-router.get("/admin/editUsers", verifySession.admin, (request, response) => {
+router.get("/admin/editUsers", (request, response) => {
   return response.render("adminEditUsers.ejs", {
     title: "View Users",
     users: "",
@@ -226,7 +257,7 @@ router.get("/admin/editUsers", verifySession.admin, (request, response) => {
   });
 });
 
-router.post("/admin/searchUser", verifySession.admin, (request, response) => {
+router.post("/admin/searchUser", (request, response) => {
   let username = request.body.username;
   db.searchUsers(username).then((result) => {
     //return response.render("adminEditUsers.ejs", {
