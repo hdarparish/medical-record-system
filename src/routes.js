@@ -72,6 +72,7 @@ router.post("/login", async (request, response, next) => {
   }
 });
 //Get the Admin page
+/*
 router.get(
   "/admin/mainpage",
   verifySession.admin,
@@ -82,8 +83,9 @@ router.get(
       patient: "",
     });
   }
-);
+);*/
 //get the regular page
+/*
 router.get("/mainpage", verifySession.user, (request, response) => {
   response.render("mainpage.ejs", {
     message: "",
@@ -97,32 +99,36 @@ router.get("/patient", verifySession.user, (request, response) => {
     pageId: "welcome",
     title: "Welcome",
   });
-});
+});*/
 
-router.get("/viewPatients", verifySession.admin, (request, response) => {
-  db.getPatients().then((result) => {
+router.get("/admin/viewPatients", async (request, response) => {
+  /* db.getPatients().then((result) => {
+
     response.render("adminViewPatients.ejs", {
       message: "",
       patients: result,
       pageId: "welcome",
       title: "Welcome",
     });
-  });
+  });*/
+  let result = await db.getPatients();
+  if (result) {
+    return response.status(200).send(result);
+  }
 });
-
+/*
 router.get("/viewSearchPatient", verifySession.user, (request, response) => {
   return response.render("searchPatient.ejs", {
     title: "Search Patient",
     message: "",
   });
-});
+});*/
 
-//search by ID/OHIP number
+//search by patient ID
 router.post("/searchPatient", verifySession.user, (request, response) => {
   let id = request.body.patientId;
   db.searchPatient(id).then((result) => {
     if (result.length > 0) {
-      console.log(result[0]);
       //return response.render("adminEditPatient.ejs", {
       return response.render("adminDeletePatient.ejs", {
         title: "View Patient",
@@ -160,7 +166,7 @@ router.post("/addNewPatient", verifySession.user, (request, response) => {
     console.error(err);
   }
 });
-
+/*
 router.get("/viewAddPatient", verifySession.admin, (request, response) => {
   response.render("adminAddPatient.ejs", {
     message: "",
@@ -177,14 +183,14 @@ router.get("/viewEditPatient", verifySession.admin, (request, response) => {
     pageId: "welcome",
     title: "Welcome",
   });
-});
+});*/
 
 router.post("/editPatient", verifySession.admin, (request, response) => {
   db.editPatient(request.body).then(() => {
     return response.status(200).redirect("/viewPatients");
   });
 });
-
+/*
 router.get("/viewDeletePatient", verifySession.admin, (request, response) => {
   response.render("adminDeletePatient.ejs", {
     message: "",
@@ -192,7 +198,7 @@ router.get("/viewDeletePatient", verifySession.admin, (request, response) => {
     pageId: "welcome",
     title: "Welcome",
   });
-});
+});*/
 
 router.post("/deletePatient", verifySession.admin, (request, response) => {
   let patientId = request.body.patientId;
@@ -213,14 +219,14 @@ router.get("/viewdoctors", (request, response) => {
     });
   });
 });
-
+/*
 router.get("/viewAddDoctor", (request, response) => {
   return response.render("addDoctor.ejs", {
     title: "Add Doctor",
     message: "",
   });
 });
-
+*/
 router.get("/admin/viewUsers", (request, response) => {
   db.getUsers().then((result) => {
     /*return response.render("adminViewUsers.ejs", {
@@ -231,14 +237,14 @@ router.get("/admin/viewUsers", (request, response) => {
     return response.status(200).send(result);
   });
 });
-
+/*
 router.get("/admin/addUsers", (request, response) => {
   return response.render("adminAddUsers.ejs", {
     title: "View Users",
     message: "",
   });
 });
-
+*/
 router.post("/admin/addNewUser", (request, response) => {
   try {
     db.addUsers(request.body).then(() => {
@@ -278,7 +284,7 @@ router.post(
     });
   }
 );
-
+/*
 router.get(
   "/admin/viewDeleteUsers",
   verifySession.admin,
@@ -289,7 +295,7 @@ router.get(
       message: "",
     });
   }
-);
+);*/
 //change the params, something different then above
 router.post("/admin/deleteUsers", verifySession.admin, (request, response) => {
   let username = request.body.username;
@@ -298,25 +304,20 @@ router.post("/admin/deleteUsers", verifySession.admin, (request, response) => {
   });
 });
 
-router.get("/admin/viewDoctors", verifySession.admin, (request, response) => {
-  db.getDoctors().then((result) => {
-    //check if admin and route to page
-    //return response.render("viewDoctors.ejs", {
-    return response.render("adminViewDoctors.ejs", {
-      title: "View Doctors",
-      doctors: result,
-      message: "",
-    });
-  });
+router.get("/admin/viewDoctors", async (request, response) => {
+  let result = await db.getDoctors();
+  if (result) {
+    return response.status(200).send(result);
+  }
 });
-
+/*
 //The add doctor page
 router.get("/admin/addDoctor", verifySession.admin, (request, response) => {
   return response.render("adminAddDoctor.ejs", {
     title: "Add Doctor",
     message: "",
   });
-});
+});*/
 
 //submit the add doctor form
 router.post("/admin/addNewDoctor", verifySession.admin, (request, response) => {
@@ -324,7 +325,7 @@ router.post("/admin/addNewDoctor", verifySession.admin, (request, response) => {
     return response.redirect("/admin/viewDoctors");
   });
 });
-
+/*
 //get the edit doctor page
 router.get("/admin/editDoctor", verifySession.admin, (request, response) => {
   return response.render("adminEditDoctor.ejs", {
@@ -332,30 +333,27 @@ router.get("/admin/editDoctor", verifySession.admin, (request, response) => {
     doctor: "",
     message: "",
   });
-});
-//submit the doctor ID to fill out the doctor profile
-router.post("/admin/searchDoctor", verifySession.admin, (request, response) => {
-  let doctorId = request.body.doctorId;
-  db.searchDoctor(doctorId).then((result) => {
-    // return response.render("adminEditDoctor.ejs", { This is used by 2 different pages, figure out a way to implement
-    return response.render("adminDeleteDoctor.ejs", {
-      title: "Remove Doctor",
-      doctor: result[0],
-      message: "",
-    });
-  });
-});
-
-router.post(
-  "/admin/editExistingDoctor",
-  verifySession.admin,
-  (request, response) => {
-    db.editDoctor(request.body).then(() => {
-      return response.redirect("/admin/viewDoctors");
-    });
+});*/
+//search the doctor ID
+router.get("/admin/searchDoctor/:id", async (request, response) => {
+  let doctorId = request.params.id;
+  let result = await db.searchDoctor(doctorId);
+  if (result) {
+    return response.status(200).send(result[0]);
   }
-);
+});
 
+router.put("/admin/editDoctor", async (request, response) => {
+  try {
+    let result = await db.editDoctor(request.body);
+    if (result) {
+      return response.status(200).send({ success: result });
+    }
+  } catch (err) {
+    return response.status(400).send({ message: err });
+  }
+});
+/*
 router.get(
   "/admin/viewDeleteDoctor",
   verifySession.admin,
@@ -366,23 +364,29 @@ router.get(
       message: "",
     });
   }
-);
+);*/
 
-router.post("/admin/deleteDoctor", verifySession.admin, (request, response) => {
-  let doctorId = request.body.doctorId;
-  db.deleteDoctor(doctorId).then(() => {
-    return response.redirect("/admin/viewDoctors");
-  });
+router.get("/admin/deleteDoctor/:id", async (request, response) => {
+  let doctorId = request.params.id;
+  try {
+    let result = await db.deleteDoctor(doctorId);
+    if (result) {
+      return response.status(200).send({ success: result });
+    }
+  } catch (err) {
+    return response.status(400).send({ message: err });
+  }
 });
 
 //Regular user routes
 //get diagnosis page
+/*
 router.get("/viewAddDiagnosis", verifySession.user, (request, response) => {
   return response.render("diagnosis.ejs", {
     title: "Add Diagnosis",
     message: "",
   });
-});
+});*/
 //add diagnosis to patient
 router.post("/AddDiagnosis", verifySession.user, (request, response) => {
   try {
@@ -408,12 +412,13 @@ router.get("/viewBills", verifySession.user, (request, response) => {
   }
 });
 //get the add bill page
+/*
 router.get("/viewAddBill", verifySession.user, (request, response) => {
   return response.render("addBills.ejs", {
     title: "Add Bill",
     message: "",
   });
-});
+});*/
 //post the bill entered to database
 router.post("/addBill", verifySession.user, (request, response) => {
   try {
@@ -438,6 +443,7 @@ router.get("/viewAppointment", verifySession.user, (request, response) => {
     console.error(err);
   }
 });
+/*
 //get the add appointment page
 router.get("/viewaddAppointment", verifySession.user, (request, response) => {
   return response.render("addAppointment.ejs", {
@@ -445,6 +451,7 @@ router.get("/viewaddAppointment", verifySession.user, (request, response) => {
     message: "",
   });
 });
+*/
 //post the appointment to the database
 router.post("/addAppointment", verifySession.user, (request, response) => {
   try {
