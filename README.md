@@ -11,76 +11,77 @@ For regular mode `npm start`
 ### Database Setup
 Enter the below in DBeaver
 ```
-CREATE DATABASE health_System
-USE health_system 
+REATE DATABASE healthSystem
+USE healthSystem 
 
 CREATE TABLE IF NOT EXISTS patients (
-	ohip int(9) NOT NULL,
-	first_name varchar(255) NOT NULL,
-	last_name varchar(255) NOT NULL,
-	phone_number varchar(20) NOT NULL,
-	dateof_birth date NOT NULL,
+	patientId int(9) NOT NULL,
+	firstName varchar(255) NOT NULL,
+	lastName varchar(255) NOT NULL,
+	phoneNumber varchar(20) NOT NULL,
+	birthDay date NOT NULL,
 	email varchar(255),
 	gender varchar(20) NOT NULL,
 	address varchar(255) not null,
-	PRIMARY KEY (ohip)
+	isActive bool default 1,
+	PRIMARY KEY (patientId)
 )
 
 CREATE TABLE IF NOT EXISTS users (
-	username varchar(255) NOT NULL,
+	userName varchar(255) NOT NULL,
 	email varchar(255) NOT NULL,
-	password varchar(20) NOT NULL,
+	password varchar(255) NOT NULL,
 	isAdmin bool NOT NULL,
-	PRIMARY KEY (username)
+	PRIMARY KEY (userName)
 )
 
 CREATE TABLE IF NOT EXISTS doctors (
-	doctor_id int(5) NOT NULL,
-	first_name varchar(255) NOT NULL,
-	last_name varchar(255) NOT NULL,
+	doctorId int(5) NOT NULL,
+	firstName varchar(255) NOT NULL,
+	lastName varchar(255) NOT NULL,
 	specialization varchar(255) not null,
 	department varchar (255) not null,
-	PRIMARY KEY (doctor_id)
+	PRIMARY KEY (doctorId)
 )
 
 CREATE TABLE IF NOT EXISTS billing (
-	bill_number int(5) NOT NULL AUTO_INCREMENT,
-	ohip int(9) NOT null,
+	billNumber int(5) NOT NULL AUTO_INCREMENT,
+	patientId int(9) NOT null,
 	amount double not null,
-	PRIMARY KEY (bill_number),
-	foreign key (ohip) references patients (ohip),
+	PRIMARY KEY (billNumber),
+	foreign key (patientId) references patients (patientId)
 )
 
  CREATE TABLE IF NOT EXISTS appointment (
-	appointment_id int(5) NOT NULL AUTO_INCREMENT, 
-	ohip int(9) NOT null,
-	appointment_time datetime not null,
-	doctor_id int(5) not null,
-	PRIMARY KEY (appointment_id),
-	foreign key (ohip) references patients (ohip),
-	foreign key (doctor_id) references doctors (doctor_id)
+	appointmentId int(5) NOT NULL AUTO_INCREMENT, 
+	patientId int(9) NOT null,
+	appointmentTime datetime not null,
+	doctorId int(5) not null,
+	PRIMARY KEY (appointmentId),
+	foreign key (patientId) references patients (patientId),
+	foreign key (doctorId) references doctors (doctorId)
 )
 
-CREATE TABLE IF NOT EXISTS medical_observation (
-	observation_id int(9)NOT NULL auto_increment,
-	doctor_id int(5) not null,
-	ohip int(9) NOT null,
-	observation_date datetime not null,
-	observation varchar(255),
-	laboratory varchar(255),
+CREATE TABLE IF NOT EXISTS medicalObservation (
+	observationId int(9)NOT NULL auto_increment,
+	doctorId int(5) not null,
+	patientId int(9) NOT null,
+	observationDate datetime not null,
+	diagnosis varchar(255),
+	labResult varchar(255),
 	prescription varchar(255),
-	PRIMARY KEY (observation_id),
-	foreign key (ohip) references patients (ohip),
-	foreign key (doctor_id) references doctors (doctor_id)
+	PRIMARY KEY (observationId),
+	foreign key (patientId) references patients (patientId),
+	foreign key (doctorId) references doctors (doctorId)
 )
 ```
 
 ### Populate Database
 
 ```
-insert into patients values (123456789, 'Jack','Daniel','4160001231','2000-01-01','jd@email.com','Male','212 Streat Boulivard');
-insert into patients values (111654987, 'Thanos','n/a','4161111111','1960-06-06','Thanos@email.com','Male','6 infitiy stones street');
-insert into patients values (456125489, 'John','Constantine','4164453554','1970-07-30','Constantine@email.com','Male','670 Avenue West');
+insert into patients values (123456789, 'Jack','Daniel','4160001231','2000-01-01','jd@email.com','Male','212 Streat Boulivard',1);
+insert into patients values (111654987, 'Thanos','n/a','4161111111','1960-06-06','Thanos@email.com','Male','6 infitiy stones street',1);
+insert into patients values (456125489, 'John','Constantine','4164453554','1970-07-30','Constantine@email.com','Male','670 Avenue West',1);
 
 insert into users values ('johndoe', 'jdoe@email.com','password',1);
 insert into users values ('janedoe', 'janedoe@email.com','password',1);
