@@ -1,6 +1,5 @@
 import express from "express";
 import routes from "./src/routes.js";
-import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -10,22 +9,10 @@ dotenv.config();
 
 const port = process.env.PORT || 3000;
 
-app.set("view engine", "ejs");
 // parse json
-app.use(express.urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-app.set("trust proxy", 1); // trust first proxy
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 600000 },
-  })
-);
-app.use("/public", express.static("public"));
-
 app.use(routes);
 
 //global error handler
