@@ -1,18 +1,22 @@
 # Medical Record Management System
+
 ### Project Setup
+
 `npm install`to install all the dependencies
 
-To start the project 
+To start the project
 
-For development mode enter `npm run dev` 
+For development mode enter `npm run dev`
 
-For regular mode `npm start` 
+For regular mode `npm start`
 
 ### Database Setup
+
 Enter the below in DBeaver
+
 ```
-REATE DATABASE healthSystem
-USE healthSystem 
+CREATE DATABASE healthSystem
+USE healthSystem
 
 CREATE TABLE IF NOT EXISTS patients (
 	patientId int(9) NOT NULL,
@@ -53,7 +57,7 @@ CREATE TABLE IF NOT EXISTS billing (
 )
 
  CREATE TABLE IF NOT EXISTS appointment (
-	appointmentId int(5) NOT NULL AUTO_INCREMENT, 
+	appointmentId int(5) NOT NULL AUTO_INCREMENT,
 	patientId int(9) NOT null,
 	appointmentTime datetime not null,
 	doctorId int(5) not null,
@@ -93,5 +97,3 @@ insert into doctors values (10020,'Ann', 'Dorathy', 'General','Medicine')
 insert into billing values (123456789, 45);
 insert into billing values (456125489, 99);
 ```
-
-

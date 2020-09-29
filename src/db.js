@@ -69,20 +69,27 @@ const searchDoctor = async (doctorId) => {
 };
 
 const editDoctor = async (reqBody) => {
-  let doctorId = reqBody.doctorId;
-  let firstName = reqBody.firstName;
-  let lastName = reqBody.lastName;
-  let specialization = reqBody.specialization;
-  let department = reqBody.department;
-  console.log(reqBody);
-  const queryResult = await query(
-    `UPDATE doctors SET firstName= '${firstName}', lastName= '${lastName}', specialization= '${specialization}', department= '${department}' where doctorId = ${doctorId}`
-  );
-  return queryResult;
+  try {
+    let doctorId = reqBody.doctorId;
+    let firstName = reqBody.firstName;
+    let lastName = reqBody.lastName;
+    let specialization = reqBody.specialization;
+    let department = reqBody.department;
+    const queryResult = await query(
+      `UPDATE doctors SET firstName= '${firstName}', lastName= '${lastName}', specialization= '${specialization}', department= '${department}' where doctorId = ${doctorId}`
+    );
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const deleteDoctor = async (doctorId) => {
-  await query(`Delete from doctors where doctorId = '${doctorId}'`);
+  try {
+    await query(`Delete from doctors where doctorId = '${doctorId}'`);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const getPatients = async () => {
@@ -106,35 +113,47 @@ const searchPatient = async (patientId) => {
 };
 
 const addPatient = async (reqBody) => {
-  let id = reqBody.ohip_number;
-  let firstName = reqBody.first_name;
-  let lastName = reqBody.last_name;
-  let birthDay = reqBody.dateof_birth;
-  let address = reqBody.address;
-  let gender = reqBody.gender;
-  let email = reqBody.email;
-  let phoneNumber = reqBody.phone_number;
+  try {
+    let id = reqBody.ohip_number;
+    let firstName = reqBody.first_name;
+    let lastName = reqBody.last_name;
+    let birthDay = reqBody.dateof_birth;
+    let address = reqBody.address;
+    let gender = reqBody.gender;
+    let email = reqBody.email;
+    let phoneNumber = reqBody.phone_number;
 
-  await query(`INSERT INTO patients (patientId, firstName, lastName, phoneNumber, birthDay, email, gender, address)
-   VALUES('${id}','${firstName}','${lastName}','${phoneNumber}', '${birthDay}','${email}','${gender}', '${address}')`);
+    await query(`INSERT INTO patients (patientId, firstName, lastName, phoneNumber, birthDay, email, gender, address)
+     VALUES('${id}','${firstName}','${lastName}','${phoneNumber}', '${birthDay}','${email}','${gender}', '${address}')`);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const editPatient = async (reqBody) => {
-  let id = reqBody.patientId;
-  let firstName = reqBody.firstName;
-  let lastName = reqBody.lastName;
-  let birthDay = reqBody.birthDay;
-  let address = reqBody.address;
-  let gender = reqBody.gender;
-  let email = reqBody.email;
-  let phoneNumber = reqBody.phoneNumber;
-  await query(
-    `UPDATE patients SET firstName= '${firstName}', lastName= '${lastName}', phoneNumber= '${phoneNumber}', birthDay= '${birthDay}', email= '${email}', gender= '${gender}', address= '${address}' WHERE ohip= '${id}'`
-  );
+  try {
+    let id = reqBody.patientId;
+    let firstName = reqBody.firstName;
+    let lastName = reqBody.lastName;
+    let birthDay = reqBody.birthDay;
+    let address = reqBody.address;
+    let gender = reqBody.gender;
+    let email = reqBody.email;
+    let phoneNumber = reqBody.phoneNumber;
+    await query(
+      `UPDATE patients SET firstName= '${firstName}', lastName= '${lastName}', phoneNumber= '${phoneNumber}', birthDay= '${birthDay}', email= '${email}', gender= '${gender}', address= '${address}' WHERE ohip= '${id}'`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const deletePatient = async (patientId) => {
-  await query(`Delete from patients where patientId = '${patientId}'`);
+  try {
+    await query(`Delete from patients where patientId = '${patientId}'`);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const patientHistory = async (patientId) => {
@@ -210,74 +229,108 @@ const deleteUsers = async (username) => {
 };
 
 const addDiagnosis = async (reqBody) => {
-  let doctorId = reqBody.doctor_id;
-  let patientId = reqBody.ohip;
-  let diagnosis = reqBody.diagnosis;
-  let labResult = reqBody.lab_result;
-  let prescription = reqBody.prescription;
-  await query(
-    `Insert into medicalObservation (doctorId, patientId, observationDate, diagnosis, labResult, prescription) values ('${doctorId}', '${patientId}', localtime,'${diagnosis}','${labResult}','${prescription}')`
-  );
+  try {
+    let doctorId = reqBody.doctor_id;
+    let patientId = reqBody.ohip;
+    let diagnosis = reqBody.diagnosis;
+    let labResult = reqBody.lab_result;
+    let prescription = reqBody.prescription;
+    await query(
+      `Insert into medicalObservation (doctorId, patientId, observationDate, diagnosis, labResult, prescription) values ('${doctorId}', '${patientId}', localtime,'${diagnosis}','${labResult}','${prescription}')`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const getBills = async () => {
-  let queryResult = await query(
-    `Select billNumber, patients.patientId, firstName, lastName, phoneNumber, email, billing.amount from patients, billing where patients.patientId = billing.patientId;`
-  );
-  return queryResult;
+  try {
+    let queryResult = await query(
+      `Select billNumber, patients.patientId, firstName, lastName, phoneNumber, email, billing.amount from patients, billing where patients.patientId = billing.patientId;`
+    );
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const addBills = async (reqBody) => {
-  let patientId = reqBody.ohip_number;
-  let amount = reqBody.amount;
-
-  await query(
-    `INSERT INTO billing (patientId,amount) values ('${patientId}', '${amount}' )`
-  );
+  try {
+    let patientId = reqBody.ohip_number;
+    let amount = reqBody.amount;
+    await query(
+      `INSERT INTO billing (patientId,amount) values ('${patientId}', '${amount}' )`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const editBill = async (reqBody) => {
-  let receipt = reqBody.receipt_id;
-  let patientId = reqBody.ohip_number;
-  let amount = reqBody.amount;
-
-  await query(
-    `UPDATE billing SET amount= '${amount}', patientId = '${patientId}' where receiptId = '${receipt}'`
-  );
+  try {
+    let receipt = reqBody.receipt_id;
+    let patientId = reqBody.ohip_number;
+    let amount = reqBody.amount;
+    await query(
+      `UPDATE billing SET amount= '${amount}', patientId = '${patientId}' where receiptId = '${receipt}'`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 const deleteBill = async (receipt) => {
-  await query(`Delete from billing where receiptId = '${receipt}'`);
+  try {
+    await query(`Delete from billing where receiptId = '${receipt}'`);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const getAppointments = async () => {
-  let queryResult = query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
-  `);
-  return queryResult;
+  try {
+    let queryResult = query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
+    `);
+    return queryResult;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const addAppointment = async (reqBody) => {
-  let patientId = reqBody.ohip_number;
-  let appointmentTime = reqBody.appointment_time;
-  let doctorId = reqBody.referred_doctor;
-
-  await query(
-    `INSERT INTO appointment (patientId,appointmentTime,doctorId) values ('${patientId}', '${appointmentTime}', '${doctorId}')`
-  );
+  try {
+    let patientId = reqBody.ohip_number;
+    let appointmentTime = reqBody.appointment_time;
+    let doctorId = reqBody.referred_doctor;
+    await query(
+      `INSERT INTO appointment (patientId,appointmentTime,doctorId) values ('${patientId}', '${appointmentTime}', '${doctorId}')`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const editAppointment = async (reqBody) => {
-  let appointmentId = reqBody.appointment_id;
-  let patientId = reqBody.ohip_number;
-  let appointmentTime = reqBody.appointment_time;
-  let doctorId = reqBody.referred_doctor;
-  await query(
-    `Update appointment set patientId = '${patientId}', appointmentTime = '${appointmentTime}' ,doctorId = '${doctorId}' where appointmentId = '${appointmentId}'`
-  );
+  try {
+    let appointmentId = reqBody.appointment_id;
+    let patientId = reqBody.ohip_number;
+    let appointmentTime = reqBody.appointment_time;
+    let doctorId = reqBody.referred_doctor;
+    await query(
+      `Update appointment set patientId = '${patientId}', appointmentTime = '${appointmentTime}' ,doctorId = '${doctorId}' where appointmentId = '${appointmentId}'`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
+
 const deleteAppointment = async (appointmentId) => {
-  await query(
-    `Delete from appointment where appointmentId = '${appointmentId}'`
-  );
+  try {
+    await query(
+      `Delete from appointment where appointmentId = '${appointmentId}'`
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 export {
   userLogin,
