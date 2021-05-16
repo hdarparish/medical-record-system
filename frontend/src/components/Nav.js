@@ -1,4 +1,7 @@
 import React from "react";
+import AuthService from "../services/auth.service";
+
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -21,6 +24,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Nav = () => {
   const classes = useStyles();
+  let history = useHistory();
+
+  const logout = (event) => {
+    // event.preventDefault();
+    AuthService.logout();
+    history.push("/login");
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -31,7 +41,9 @@ const Nav = () => {
             <Button color="inherit">Doctors</Button>
             <Button color="inherit">Appointments</Button>
             <Button color="inherit">Billings</Button>
-            <Button color="inherit">Logout</Button>
+            <Button color="inherit" onClick={logout}>
+              Logout
+            </Button>
           </Typography>
         </Toolbar>
       </AppBar>

@@ -9,6 +9,7 @@ const db = mysql.createConnection({
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
+  port: 9001,
 });
 
 const query = util.promisify(db.query).bind(db);
@@ -19,12 +20,10 @@ db.connect((error) => {
   console.log("Successfully connected to the database.");
 });
 
-const userLogin = async (reqBody) => {
-  let username = reqBody.username;
-
+const userLogin = async (userName) => {
   try {
     const queryResult = await query(
-      `Select * from users where userName = '${username}'`
+      `Select * from users where userName = '${userName}'`
     );
     return queryResult;
   } catch (err) {
@@ -288,7 +287,8 @@ const deleteBill = async (receipt) => {
 
 const getAppointments = async () => {
   try {
-    let queryResult = query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
+    let queryResult =
+      query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
     `);
     return queryResult;
   } catch (err) {
