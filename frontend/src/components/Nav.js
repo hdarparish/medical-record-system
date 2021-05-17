@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 import { useHistory } from "react-router-dom";
@@ -19,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-evenly",
     flex: 1,
+    "& ul": {
+      listStyle: "none",
+      "& a": {
+        textDecoration: "none",
+        color: "white",
+      },
+    },
   },
 }));
 
@@ -36,14 +44,38 @@ const Nav = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Button color="inherit">Home</Button>
-            <Button color="inherit">Patients</Button>
-            <Button color="inherit">Doctors</Button>
-            <Button color="inherit">Appointments</Button>
-            <Button color="inherit">Billings</Button>
-            <Button color="inherit" onClick={logout}>
-              Logout
-            </Button>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link to="/patients">Patients</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link to="/doctors">Doctors</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link to="/appointments">Appointments</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link to="/billings">Billings</Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Button color="inherit" onClick={logout}>
+                  Logout
+                </Button>
+              </li>
+            </ul>
           </Typography>
         </Toolbar>
       </AppBar>

@@ -9,7 +9,7 @@ const db = mysql.createConnection({
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: 9001,
+  //port: 9001,
 });
 
 const query = util.promisify(db.query).bind(db);
@@ -189,7 +189,7 @@ const searchUsers = async (username) => {
 };
 
 const addUsers = async (reqBody) => {
-  let userName = reqBody.userName;
+  let userName = reqBody.username;
   let email = reqBody.email;
   let password = reqBody.password;
   let isAdmin = reqBody.credential;
@@ -205,7 +205,7 @@ const addUsers = async (reqBody) => {
 };
 
 const editUsers = async (reqBody) => {
-  let userName = reqBody.userName;
+  let userName = reqBody.username;
   let email = reqBody.email;
   let password = reqBody.password;
   let isAdmin = reqBody.credential;
