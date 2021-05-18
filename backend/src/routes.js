@@ -31,11 +31,10 @@ router.post("/login", async (request, response, next) => {
         //if the user is not admin then redirect
         //return response.status(200).redirect("/mainpage");
       }
-    } else {
-      return response
-        .status(401)
-        .send({ message: "incorrect credentials provided" });
     }
+    return response
+      .status(401)
+      .send({ message: "incorrect credentials provided" });
   } catch (err) {
     return response
       .status(401)
@@ -80,7 +79,7 @@ router.post("/searchPatient", async (request, response) => {
 // add new patient route
 router.post("/addNewPatient", async (request, response) => {
   try {
-    await db.addPatient(request.body);
+    await db.addPatient(request.body.patient);
     return response.status(201).send({ message: "Patient Added" });
   } catch (err) {
     console.error(err);

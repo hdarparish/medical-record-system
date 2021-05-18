@@ -113,14 +113,14 @@ const searchPatient = async (patientId) => {
 
 const addPatient = async (reqBody) => {
   try {
-    let id = reqBody.ohip_number;
-    let firstName = reqBody.first_name;
-    let lastName = reqBody.last_name;
-    let birthDay = reqBody.dateof_birth;
+    let id = reqBody.patientId;
+    let firstName = reqBody.firstName;
+    let lastName = reqBody.lastName;
+    let birthDay = Date.parse(reqBody.BirthDay);
     let address = reqBody.address;
     let gender = reqBody.gender;
     let email = reqBody.email;
-    let phoneNumber = reqBody.phone_number;
+    let phoneNumber = reqBody.phoneNumber;
 
     await query(`INSERT INTO patients (patientId, firstName, lastName, phoneNumber, birthDay, email, gender, address)
      VALUES('${id}','${firstName}','${lastName}','${phoneNumber}', '${birthDay}','${email}','${gender}', '${address}')`);

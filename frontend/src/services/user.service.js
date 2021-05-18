@@ -23,10 +23,25 @@ const getPatients = () => {
   return axios.get(API_URL + "admin/viewPatients", { headers: authHeader() });
 };
 
+const addPatient = async (patient) => {
+  return await axios
+    .post(API_URL + "addNewPatient", {
+      headers: authHeader(),
+      patient,
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 export {
   getPublicContent,
   getUserBoard,
   getModeratorBoard,
   getAdminBoard,
   getPatients,
+  addPatient,
 };
