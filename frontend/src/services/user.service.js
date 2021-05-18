@@ -37,6 +37,34 @@ const addPatient = async (patient) => {
     });
 };
 
+const searchPatient = async (patientId) => {
+  return await axios
+    .post(API_URL + "searchPatient", {
+      headers: authHeader(),
+      patientId,
+    })
+    .then((response) => {
+      return response.data[0];
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
+const editPatient = async (patient) => {
+  return await axios
+    .post(API_URL + "editPatient", {
+      headers: authHeader(),
+      patient,
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 export {
   getPublicContent,
   getUserBoard,
@@ -44,4 +72,6 @@ export {
   getAdminBoard,
   getPatients,
   addPatient,
+  searchPatient,
+  editPatient,
 };

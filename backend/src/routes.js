@@ -89,7 +89,7 @@ router.post("/addNewPatient", async (request, response) => {
 //edit patient route
 router.post("/editPatient", async (request, response) => {
   try {
-    await db.editPatient(request.body);
+    await db.editPatient(request.body.patient);
     return response
       .status(200)
       .send({ message: "Patient Profile Update successful" });

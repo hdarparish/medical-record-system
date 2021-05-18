@@ -13,7 +13,7 @@ const Patients = () => {
     patientId: "",
     firstName: "",
     lastName: "",
-    BirthDay: "",
+    birthDay: "",
     gender: "",
     phoneNumber: "",
     email: "",
@@ -44,6 +44,26 @@ const Patients = () => {
   const submitNewPatient = (e) => {
     e.preventDefault();
     api.addPatient(patientProfile);
+  };
+  const searchPatient = async (e) => {
+    e.preventDefault();
+    let result = await api.searchPatient(patientProfile.patientId);
+    //remove the time from the date, otherwise it will not update the date picker
+    let date = result.birthDay.split("T")[0];
+    setPatientProfile({
+      patientId: result.patientId,
+      firstName: result.firstName,
+      lastName: result.lastName,
+      birthDay: date,
+      gender: result.gender,
+      phoneNumber: result.phoneNumber,
+      email: result.email,
+      address: result.address,
+    });
+  };
+  const editPatient = (e) => {
+    e.preventDefault();
+    api.editPatient(patientProfile);
   };
   const set = (name) => {
     return ({ target: { value } }) => {
@@ -84,7 +104,7 @@ const Patients = () => {
                     <td>
                       {row.lastName}, {row.firstName}
                     </td>
-                    <td>{row.birthDay.toLocaleString()}</td>
+                    <td>{row.birthDay.split("T")[0]}</td>
                     <td>{row.gender}</td>
                     <td>{row.phoneNumber}</td>
                     <td>{row.email}</td>
@@ -184,44 +204,84 @@ const Patients = () => {
           <div>
             <h2>Edit Patient</h2>
           </div>
-          <form>
+          <form onSubmit={searchPatient}>
             <div>
               <label htmlFor="patientId">Patient ID</label>
-              <input id="patientId" type="text" />
+              <input
+                value={patientProfile.patientId}
+                onChange={set("patientId")}
+                id="patientId"
+                type="text"
+              />
             </div>
             <div>
-              <button>Search</button>
+              <button type="submit">Search</button>
             </div>
           </form>
 
-          <form>
+          <form onSubmit={editPatient}>
             <div>
               <label htmlFor="firstName">First Name</label>
-              <input id="firstName" type="text" />
+              <input
+                value={patientProfile.firstName}
+                onChange={set("firstName")}
+                id="firstName"
+                type="text"
+              />
             </div>
             <div>
               <label htmlFor="lastName">Last Name</label>
-              <input id="lastName" type="text" />
+              <input
+                value={patientProfile.lastName}
+                onChange={set("lastName")}
+                id="lastName"
+                type="text"
+              />
             </div>
             <div>
               <label htmlFor="birthDay">Date of Birth</label>
-              <input id="birthDay" type="date" />
+              <input
+                value={patientProfile.birthDay}
+                onChange={set("birthDay")}
+                id="birthDay"
+                type="date"
+              />
             </div>
             <div>
               <label htmlFor="gender">Gender</label>
-              <input id="gender" type="text" />
+              <input
+                value={patientProfile.gender}
+                onChange={set("gender")}
+                id="gender"
+                type="text"
+              />
             </div>
             <div>
               <label htmlFor="phoneNumber">Phone Number</label>
-              <input id="phoneNumber" type="text" />
+              <input
+                value={patientProfile.phoneNumber}
+                onChange={set("phoneNumber")}
+                id="phoneNumber"
+                type="text"
+              />
             </div>
             <div>
               <label htmlFor="email">Email</label>
-              <input id="email" type="text" />
+              <input
+                value={patientProfile.email}
+                onChange={set("email")}
+                id="email"
+                type="text"
+              />
             </div>
             <div>
               <label htmlFor="address">Address</label>
-              <input id="address" type="text" />
+              <input
+                value={patientProfile.address}
+                onChange={set("address")}
+                id="address"
+                type="text"
+              />
             </div>
             <div>
               <button type="submit">Submit</button>

@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import authHeader from "../services/auth-header";
+import React from "react";
 
 const Home = () => {
   /*  const API_URL = "http://localhost:4000/";

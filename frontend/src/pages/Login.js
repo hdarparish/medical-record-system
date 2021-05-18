@@ -18,7 +18,6 @@ const Login = () => {
 
   const loginSubmit = async (event) => {
     event.preventDefault();
-    console.log(username);
     let response = await AuthService.login(username, password);
 
     if (response.status >= 400) {
