@@ -9,7 +9,7 @@ const db = mysql.createConnection({
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: 9001,
+  port: process.env.DATABASE_PORT,
 });
 
 const query = util.promisify(db.query).bind(db);
@@ -113,14 +113,14 @@ const searchPatient = async (patientId) => {
 
 const addPatient = async (reqBody) => {
   try {
-    let id = reqBody.ohip_number;
-    let firstName = reqBody.first_name;
-    let lastName = reqBody.last_name;
-    let birthDay = reqBody.dateof_birth;
+    let id = reqBody.patientId;
+    let firstName = reqBody.firstName;
+    let lastName = reqBody.lastName;
+    let birthDay = reqBody.birthDay;
     let address = reqBody.address;
     let gender = reqBody.gender;
     let email = reqBody.email;
-    let phoneNumber = reqBody.phone_number;
+    let phoneNumber = reqBody.phoneNumber;
 
     await query(`INSERT INTO patients (patientId, firstName, lastName, phoneNumber, birthDay, email, gender, address)
      VALUES('${id}','${firstName}','${lastName}','${phoneNumber}', '${birthDay}','${email}','${gender}', '${address}')`);
@@ -140,7 +140,7 @@ const editPatient = async (reqBody) => {
     let email = reqBody.email;
     let phoneNumber = reqBody.phoneNumber;
     await query(
-      `UPDATE patients SET firstName= '${firstName}', lastName= '${lastName}', phoneNumber= '${phoneNumber}', birthDay= '${birthDay}', email= '${email}', gender= '${gender}', address= '${address}' WHERE ohip= '${id}'`
+      `UPDATE patients SET firstName= '${firstName}', lastName= '${lastName}', phoneNumber= '${phoneNumber}', birthDay= '${birthDay}', email= '${email}', gender= '${gender}', address= '${address}' WHERE patientId= '${id}'`
     );
   } catch (err) {
     console.error(err);
@@ -189,7 +189,7 @@ const searchUsers = async (username) => {
 };
 
 const addUsers = async (reqBody) => {
-  let userName = reqBody.userName;
+  let userName = reqBody.username;
   let email = reqBody.email;
   let password = reqBody.password;
   let isAdmin = reqBody.credential;
@@ -205,7 +205,7 @@ const addUsers = async (reqBody) => {
 };
 
 const editUsers = async (reqBody) => {
-  let userName = reqBody.userName;
+  let userName = reqBody.username;
   let email = reqBody.email;
   let password = reqBody.password;
   let isAdmin = reqBody.credential;
@@ -230,7 +230,7 @@ const deleteUsers = async (username) => {
 const addDiagnosis = async (reqBody) => {
   try {
     let doctorId = reqBody.doctor_id;
-    let patientId = reqBody.ohip;
+    let patientId = reqBody.patientId;
     let diagnosis = reqBody.diagnosis;
     let labResult = reqBody.lab_result;
     let prescription = reqBody.prescription;
@@ -255,7 +255,7 @@ const getBills = async () => {
 
 const addBills = async (reqBody) => {
   try {
-    let patientId = reqBody.ohip_number;
+    let patientId = reqBody.patientId;
     let amount = reqBody.amount;
     await query(
       `INSERT INTO billing (patientId,amount) values ('${patientId}', '${amount}' )`
@@ -268,7 +268,7 @@ const addBills = async (reqBody) => {
 const editBill = async (reqBody) => {
   try {
     let receipt = reqBody.receipt_id;
-    let patientId = reqBody.ohip_number;
+    let patientId = reqBody.patientId;
     let amount = reqBody.amount;
     await query(
       `UPDATE billing SET amount= '${amount}', patientId = '${patientId}' where receiptId = '${receipt}'`
@@ -298,7 +298,7 @@ const getAppointments = async () => {
 
 const addAppointment = async (reqBody) => {
   try {
-    let patientId = reqBody.ohip_number;
+    let patientId = reqBody.patientId;
     let appointmentTime = reqBody.appointment_time;
     let doctorId = reqBody.referred_doctor;
     await query(
@@ -312,7 +312,7 @@ const addAppointment = async (reqBody) => {
 const editAppointment = async (reqBody) => {
   try {
     let appointmentId = reqBody.appointment_id;
-    let patientId = reqBody.ohip_number;
+    let patientId = reqBody.patientId;
     let appointmentTime = reqBody.appointment_time;
     let doctorId = reqBody.referred_doctor;
     await query(

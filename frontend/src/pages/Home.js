@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import authHeader from "../services/auth-header";
+import React from "react";
 
 const Home = () => {
-  const API_URL = "http://localhost:4000/";
+  /*  const API_URL = "http://localhost:4000/";
 
   useEffect(() => {
     const getTable = async () => {
@@ -22,10 +20,11 @@ const Home = () => {
     };
     getTable();
   }, []);
-
+ */
   return (
     <div>
       <p>This is the homepage</p>
+      <p>Display dashboard</p>
     </div>
   );
 };

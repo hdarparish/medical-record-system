@@ -2,43 +2,13 @@ import React, { useState } from "react";
 import AuthService from "../services/auth.service";
 import { useHistory, useLocation } from "react-router-dom";
 //styles
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import styled from "styled-components";
+
 //logo
 import Logo from "../img/New-Horizon.png";
 
-const useStyles = makeStyles((theme) => ({
-  login_form: {
-    "& > *": {
-      marginTop: theme.spacing(1),
-      width: "60%",
-    },
-  },
-  centered: {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "center",
-  },
-  logo: {
-    width: "100%",
-    textAlign: "center",
-    "& img": {
-      width: "60%",
-    },
-  },
-  submit_btn: {
-    width: "100%",
-    "& button": {
-      width: "60%",
-    },
-  },
-}));
 const Login = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   let history = useHistory();
   let location = useLocation();
   const [username, setUsername] = useState("");
@@ -48,7 +18,6 @@ const Login = () => {
 
   const loginSubmit = async (event) => {
     event.preventDefault();
-
     let response = await AuthService.login(username, password);
 
     if (response.status >= 400) {
@@ -61,40 +30,86 @@ const Login = () => {
   };
 
   return (
-    <div className={classes.centered}>
-      <div className={classes.logo}>
+    <Wrapper>
+      <div>
         <img src={Logo} alt="clinic logo" />
       </div>
       {!auth && (
-        <Alert severity="error">
-          <AlertTitle>Error: {message}</AlertTitle>
+        <Alert>
+          <h2>Error: {message}</h2>
         </Alert>
       )}
-      <form
-        className={classes.login_form}
-        onSubmit={loginSubmit}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="standard-basic"
-          label="Username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          id="standard-basic"
-          label="Password"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className={classes.submit_btn}>
-          <Button variant="contained" type="submit">
+      <form onSubmit={loginSubmit} noValidate autoComplete="off">
+        <div>
+          <label htmlFor="Username">Username</label>
+          <input
+            label="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="Password">Password</label>
+          <input
+            type="password"
+            label="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+        </div>
+
+        <div>
+          <button variant="contained" type="submit">
             Submit
-          </Button>
+          </button>
         </div>
       </form>
-    </div>
+    </Wrapper>
   );
 };
+
+const Alert = styled.div`
+  background: #eb9898;
+`;
+const Wrapper = styled.div`
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    input {
+      flex: 1;
+      font-size: 1.5rem;
+      padding: 0.5rem;
+      border: none;
+      margin-top: 1rem;
+      box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    }
+    label {
+      flex: 1;
+      margin: 1rem 1rem 0rem 0rem;
+      font-size: 1.5rem;
+    }
+    button {
+      font-size: 1.5rem;
+      border: none;
+      margin-top: 1rem;
+      padding: 0.5rem 2rem;
+      cursor: pointer;
+      background: #5e8ec4;
+      color: white;
+      &:hover {
+        opacity: 0.7;
+        transition: 0.3;
+      }
+    }
+  }
+`;
 
 export default Login;

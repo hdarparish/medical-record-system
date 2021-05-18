@@ -1,6 +1,7 @@
 //Pages
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Patients from "./pages/Patients";
 //components
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
@@ -17,7 +18,12 @@ function App() {
           <Route exact path="/login" component={Login} />
           <PrivateRoute path="/">
             <Nav />
-            <Home />
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/patients" exact>
+              <Patients />
+            </Route>
             <Footer />
           </PrivateRoute>
         </Switch>
