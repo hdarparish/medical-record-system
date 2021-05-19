@@ -2,6 +2,7 @@
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Patients from "./pages/Patients";
+import Doctor from "./pages/Doctor";
 //components
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
@@ -21,8 +22,11 @@ function App() {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/patients" exact>
+            <Route path="/patients">
               <Patients />
+            </Route>
+            <Route path="/doctors">
+              <Doctor />
             </Route>
             <Footer />
           </PrivateRoute>

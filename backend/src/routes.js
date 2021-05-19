@@ -183,7 +183,7 @@ router.get("/admin/viewDoctors", async (request, response) => {
 //admin add new doctor
 router.post("/admin/addDoctor", async (request, response) => {
   try {
-    let result = await db.addDoctors(request.body);
+    let result = await db.addDoctors(request.body.doctor);
     if (result) {
       return response.status(200).send({ message: "Doctor Added" });
     }
@@ -193,9 +193,9 @@ router.post("/admin/addDoctor", async (request, response) => {
 });
 
 //search the doctor ID
-router.get("/admin/searchDoctor/:id", async (request, response) => {
-  let doctorId = request.params.id;
+router.post("/admin/searchDoctor", async (request, response) => {
   try {
+    let doctorId = request.body.doctorId;
     let result = await db.searchDoctor(doctorId);
     if (result) {
       return response.status(200).send(result[0]);
@@ -205,9 +205,9 @@ router.get("/admin/searchDoctor/:id", async (request, response) => {
   }
 });
 
-router.put("/admin/editDoctor", async (request, response) => {
+router.post("/admin/editDoctor", async (request, response) => {
   try {
-    let result = await db.editDoctor(request.body);
+    let result = await db.editDoctor(request.body.doctor);
     if (result) {
       return response.status(200).send({ success: result });
     }
