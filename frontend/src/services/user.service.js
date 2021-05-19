@@ -111,6 +111,10 @@ const editDoctor = async (doctor) => {
     });
 };
 
+const getAppointments = () => {
+  return axios.get(API_URL + "appointments", { headers: authHeader() });
+};
+
 export {
   getPublicContent,
   getUserBoard,
@@ -124,4 +128,5 @@ export {
   addDoctor,
   searchDoctor,
   editDoctor,
+  getAppointments,
 };

@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Patients from "./pages/Patients";
 import Doctor from "./pages/Doctor";
+import Appointment from "./pages/Appointment";
 //components
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
@@ -27,6 +28,9 @@ function App() {
             </Route>
             <Route path="/doctors">
               <Doctor />
+            </Route>
+            <Route path="/appointments">
+              <Appointment />
             </Route>
             <Footer />
           </PrivateRoute>

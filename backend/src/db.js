@@ -288,7 +288,8 @@ const deleteBill = async (receipt) => {
 const getAppointments = async () => {
   try {
     let queryResult =
-      query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
+      //query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
+      query(`select appointmentId as id, appointmentTime as startDate, CONCAT(patients.lastName, ' ', patients.firstName) AS title from appointment, patients where appointment.patientId = patients.patientId
     `);
     return queryResult;
   } catch (err) {
