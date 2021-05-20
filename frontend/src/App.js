@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Patients from "./pages/Patients";
 import Doctor from "./pages/Doctor";
 import Appointment from "./pages/Appointment";
+import Billing from "./pages/Billing";
 //components
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
@@ -31,6 +32,9 @@ function App() {
             </Route>
             <Route path="/appointments">
               <Appointment />
+            </Route>
+            <Route path="/billings">
+              <Billing />
             </Route>
             <Footer />
           </PrivateRoute>

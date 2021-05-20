@@ -129,6 +129,24 @@ const addAppointment = async (data) => {
     });
 };
 
+const getBills = async () => {
+  return axios.get(API_URL + "viewBills", { headers: authHeader() });
+};
+
+const addBill = async (data) => {
+  return await axios
+    .post(API_URL + "addBill", {
+      headers: authHeader(),
+      data,
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 export {
   getPublicContent,
   getUserBoard,
@@ -144,4 +162,6 @@ export {
   editDoctor,
   getAppointments,
   addAppointment,
+  getBills,
+  addBill,
 };
