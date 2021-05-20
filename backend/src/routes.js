@@ -252,7 +252,7 @@ router.get("/viewBills", async (request, response) => {
 //post the bill entered to database
 router.post("/addBill", async (request, response) => {
   try {
-    await db.addBills(request.body);
+    await db.addBills(request.body.data);
     return response.status(201).send({ message: "Bill Added" });
   } catch (err) {
     console.error(err);
