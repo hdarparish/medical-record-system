@@ -289,7 +289,7 @@ const getAppointments = async () => {
   try {
     let queryResult =
       //query(`select appointmentTime, appointment.patientId, patients.lastName as patient_lname, patients.firstName, doctors.doctorId, doctors.lastName  from appointment, patients, doctors where appointment.patientId = patients.patientId and doctors.doctorId = appointment.doctorId
-      query(`select appointmentId as id, appointmentTime as startDate, CONCAT(patients.lastName, ' ', patients.firstName) AS title from appointment, patients where appointment.patientId = patients.patientId
+      query(`select appointmentId as id, appointmentTime as startDate, CONCAT(patients.lastName, ', ', patients.firstName) AS title from appointment, patients where appointment.patientId = patients.patientId
     `);
     return queryResult;
   } catch (err) {
@@ -300,8 +300,8 @@ const getAppointments = async () => {
 const addAppointment = async (reqBody) => {
   try {
     let patientId = reqBody.patientId;
-    let appointmentTime = reqBody.appointment_time;
-    let doctorId = reqBody.referred_doctor;
+    let appointmentTime = reqBody.appointmentTime;
+    let doctorId = reqBody.doctorId;
     await query(
       `INSERT INTO appointment (patientId,appointmentTime,doctorId) values ('${patientId}', '${appointmentTime}', '${doctorId}')`
     );

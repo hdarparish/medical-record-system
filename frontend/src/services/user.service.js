@@ -115,6 +115,20 @@ const getAppointments = () => {
   return axios.get(API_URL + "appointments", { headers: authHeader() });
 };
 
+const addAppointment = async (data) => {
+  return await axios
+    .post(API_URL + "addAppointment", {
+      headers: authHeader(),
+      data,
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 export {
   getPublicContent,
   getUserBoard,
@@ -129,4 +143,5 @@ export {
   searchDoctor,
   editDoctor,
   getAppointments,
+  addAppointment,
 };
