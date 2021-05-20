@@ -273,7 +273,7 @@ router.get("/appointments", async (request, response) => {
 //post the appointment to the database
 router.post("/addAppointment", async (request, response) => {
   try {
-    let result = await db.addAppointment(request.body);
+    let result = await db.addAppointment(request.body.data);
     if (result) {
       return response.status(201).send({ appointment: "Created" });
     }
