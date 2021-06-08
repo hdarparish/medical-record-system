@@ -44,7 +44,7 @@ router.post("/login", async (request, response, next) => {
 
 router.get(
   "/admin/viewPatients",
-  verifyJwt.verifyToken,
+  //verifyJwt.verifyToken,
   async (request, response) => {
     try {
       let result = await db.getPatients();
