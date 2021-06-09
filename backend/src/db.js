@@ -141,7 +141,7 @@ const addPatient = async (reqBody) => {
 
 const editPatient = async (reqBody) => {
   try {
-    let id = reqBody.patientId;
+    let patientId = reqBody.patientId;
     let firstName = reqBody.firstName;
     let lastName = reqBody.lastName;
     let birthDay = reqBody.birthDay;
@@ -309,7 +309,7 @@ const editBill = async (reqBody) => {
 };
 const deleteBill = async (receipt) => {
   try {
-    await query(`Delete from billing where receiptId = ?`, [receipt]);
+    await query(`Delete from billing where billNumber = ?`, [receipt]);
   } catch (err) {
     console.error(err);
   }

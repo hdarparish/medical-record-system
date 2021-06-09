@@ -58,12 +58,14 @@ const Navbar = styled.div`
   font-size: 1.5rem;
   background: #616199;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  font-family: "Roboto", sans-serif;
   ul {
     list-style: none;
     padding: 0;
     a {
       text-decoration: none;
       color: whitesmoke;
+
       &:hover {
         color: #bea1a1;
       }

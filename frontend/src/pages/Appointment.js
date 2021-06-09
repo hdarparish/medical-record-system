@@ -146,6 +146,7 @@ const Appointment = () => {
 };
 
 const AddAppointment = styled.div`
+  font-family: "Roboto", sans-serif;
   .side-menu {
     position: fixed;
     top: 0;

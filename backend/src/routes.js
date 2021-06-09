@@ -25,7 +25,7 @@ router.post("/login", async (request, response, next) => {
           return response.status(200).send({ data: "Success" });
         } */
         const token = jwtoken.sign({ userName }, process.env.JWT_SECRET, {
-          expiresIn: "10m",
+          expiresIn: "60m",
         });
         return response.status(200).send({ token });
         //if the user is not admin then redirect
@@ -42,22 +42,18 @@ router.post("/login", async (request, response, next) => {
   }
 });
 
-router.get(
-  "/admin/viewPatients",
-  //verifyJwt.verifyToken,
-  async (request, response) => {
-    try {
-      let result = await db.getPatients();
-      if (result) {
-        return response.status(200).send(result);
-      }
-    } catch (err) {
-      return response
-        .status(401)
-        .send({ message: "incorrect credentials provided" });
+router.get("/patients", verifyJwt.verifyToken, async (request, response) => {
+  try {
+    let result = await db.getPatients();
+    if (result) {
+      return response.status(200).send(result);
     }
+  } catch (err) {
+    return response
+      .status(401)
+      .send({ message: "incorrect credentials provided" });
   }
-);
+});
 
 //search by patient ID
 router.post("/searchPatient", async (request, response) => {
@@ -77,7 +73,7 @@ router.post("/searchPatient", async (request, response) => {
 });
 
 // add new patient route
-router.post("/addNewPatient", async (request, response) => {
+router.post("/patient", verifyJwt.verifyToken, async (request, response) => {
   try {
     await db.addPatient(request.body.patient);
     return response.status(201).send({ message: "Patient Added" });
@@ -87,7 +83,7 @@ router.post("/addNewPatient", async (request, response) => {
 });
 
 //edit patient route
-router.post("/editPatient", async (request, response) => {
+router.put("/patient", async (request, response) => {
   try {
     await db.editPatient(request.body.patient);
     return response
@@ -99,17 +95,21 @@ router.post("/editPatient", async (request, response) => {
 });
 
 //delete patient route
-router.post("/deletePatient", async (request, response) => {
-  let patientId = request.body.patientId;
-  try {
-    await db.deletePatient(patientId);
-    return response.status(200).send({ message: "Patient Profile Deleted " });
-  } catch (err) {
-    console.error(err);
+router.delete(
+  "/patient/:id",
+  verifyJwt.verifyToken,
+  async (request, response) => {
+    let patientId = request.params.id;
+    try {
+      await db.deletePatient(patientId);
+      return response.status(200).send({ message: "Patient Profile Deleted " });
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
-//admin view all users
-router.get("/admin/viewUsers", async (request, response) => {
+);
+// view all users
+router.get("/users", verifyJwt.verifyToken, async (request, response) => {
   try {
     let result = db.getUsers();
     if (result) {
@@ -121,7 +121,7 @@ router.get("/admin/viewUsers", async (request, response) => {
 });
 
 //admin add new user
-router.post("/admin/addUser", async (request, response) => {
+router.post("/user", verifyJwt.verifyToken, async (request, response) => {
   try {
     await db.addUsers(request.body);
     return response.status(201).send({ message: "User Created" });
@@ -130,7 +130,7 @@ router.post("/admin/addUser", async (request, response) => {
   }
 });
 
-//admin search user
+/* //admin search user
 router.post("/admin/searchUser", async (request, response) => {
   let username = request.body.username;
   try {
@@ -141,10 +141,10 @@ router.post("/admin/searchUser", async (request, response) => {
   } catch (err) {
     console.error(err);
   }
-});
+}); */
 
 //admin edit user
-router.post("/admin/editUsers", async (request, response) => {
+router.put("/user", verifyJwt.verifyToken, async (request, response) => {
   try {
     let result = await db.editUsers(request.body);
     if (result) {
@@ -156,7 +156,7 @@ router.post("/admin/editUsers", async (request, response) => {
 });
 
 //admin delete user
-router.post("/admin/deleteUsers", async (request, response) => {
+router.delete("/user", verifyJwt.verifyToken, async (request, response) => {
   let username = request.body.username;
   try {
     let result = await db.deleteUsers(username);
@@ -169,7 +169,7 @@ router.post("/admin/deleteUsers", async (request, response) => {
 });
 
 //admin view all doctors
-router.get("/admin/viewDoctors", async (request, response) => {
+router.get("/doctors", verifyJwt.verifyToken, async (request, response) => {
   try {
     let result = await db.getDoctors();
     if (result) {
@@ -181,7 +181,8 @@ router.get("/admin/viewDoctors", async (request, response) => {
 });
 
 //admin add new doctor
-router.post("/admin/addDoctor", async (request, response) => {
+router.post("/doctor", async (request, response) => {
+  console.log(request.body);
   try {
     let result = await db.addDoctors(request.body.doctor);
     if (result) {
@@ -192,20 +193,8 @@ router.post("/admin/addDoctor", async (request, response) => {
   }
 });
 
-//search the doctor ID
-router.post("/admin/searchDoctor", async (request, response) => {
-  try {
-    let doctorId = request.body.doctorId;
-    let result = await db.searchDoctor(doctorId);
-    if (result) {
-      return response.status(200).send(result[0]);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-router.post("/admin/editDoctor", async (request, response) => {
+//edit doctor
+router.put("/doctor", verifyJwt.verifyToken, async (request, response) => {
   try {
     let result = await db.editDoctor(request.body.doctor);
     if (result) {
@@ -216,20 +205,24 @@ router.post("/admin/editDoctor", async (request, response) => {
   }
 });
 
-router.get("/admin/deleteDoctor/:id", async (request, response) => {
-  let doctorId = request.params.id;
-  try {
-    let result = await db.deleteDoctor(doctorId);
-    if (result) {
-      return response.status(200).send({ success: result });
+router.delete(
+  "/doctor/:id",
+  verifyJwt.verifyToken,
+  async (request, response) => {
+    let doctorId = request.params.id;
+    try {
+      let result = await db.deleteDoctor(doctorId);
+      if (result) {
+        return response.status(200).send({ success: result });
+      }
+    } catch (err) {
+      return response.status(400).send({ message: err });
     }
-  } catch (err) {
-    return response.status(400).send({ message: err });
   }
-});
+);
 
 //add diagnosis to patient
-router.post("/AddDiagnosis", async (request, response) => {
+router.post("/diagnosis", verifyJwt.verifyToken, async (request, response) => {
   try {
     await db.addDiagnosis(request.body);
     return response.status(201).send({ message: "Diagnosis Added" });
@@ -237,8 +230,8 @@ router.post("/AddDiagnosis", async (request, response) => {
     console.error(err);
   }
 });
-//get the bills page
-router.get("/viewBills", async (request, response) => {
+//get all bills
+router.get("/bills", verifyJwt.verifyToken, async (request, response) => {
   try {
     let result = await db.getBills();
     if (result) {
@@ -250,7 +243,7 @@ router.get("/viewBills", async (request, response) => {
 });
 
 //post the bill entered to database
-router.post("/addBill", async (request, response) => {
+router.post("/bill", verifyJwt.verifyToken, async (request, response) => {
   try {
     await db.addBills(request.body.data);
     return response.status(201).send({ message: "Bill Added" });
@@ -258,33 +251,47 @@ router.post("/addBill", async (request, response) => {
     console.error(err);
   }
 });
-//get the appointments
-router.get("/appointments", async (request, response) => {
+//delete patient route
+router.delete("/bill/:id", verifyJwt.verifyToken, async (request, response) => {
+  let billId = request.params.id;
   try {
-    let result = await db.getAppointments();
-    if (result) {
-      return response.status(200).send(result);
-    }
+    console.log(billId);
+    await db.deleteBill(billId);
+    return response.status(200).send({ message: "Bill deleted " });
   } catch (err) {
     console.error(err);
   }
 });
+//get the appointments
+router.get(
+  "/appointments",
+  verifyJwt.verifyToken,
+  async (request, response) => {
+    try {
+      let result = await db.getAppointments();
+      if (result) {
+        return response.status(200).send(result);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+);
 
 //post the appointment to the database
-router.post("/addAppointment", async (request, response) => {
-  try {
-    let result = await db.addAppointment(request.body.data);
-    if (result) {
-      return response.status(201).send({ appointment: "Created" });
+router.post(
+  "/appointment",
+  verifyJwt.verifyToken,
+  async (request, response) => {
+    try {
+      let result = await db.addAppointment(request.body.data);
+      if (result) {
+        return response.status(201).send({ appointment: "Created" });
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
   }
-});
-//terminate session and redirect to login
-router.get("/logout", (request, response) => {
-  request.session.destroy();
-  return response.status(201).redirect("/");
-});
+);
 
 export default router;

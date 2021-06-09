@@ -25,13 +25,12 @@ const Patients = () => {
     let result = await api.getPatients();
     setPatients(result.data);
   };
-  //view the add patients form and hide the table and edit table form
+  //toggle the add patients form
   const toggleAddPatient = (e) => {
     e.preventDefault();
     setPatientProfile(initialState);
     setAddForm(!addForm);
   };
-  //view the edit patients form and hide the table and add table form
 
   const toggleEditPatient = (e) => {
     let patientId = Number(e.target.parentElement.parentNode.id);
@@ -47,6 +46,10 @@ const Patients = () => {
   const editPatient = (e) => {
     e.preventDefault();
     api.editPatient(patientProfile);
+  };
+  const deletePatient = (e) => {
+    e.preventDefault();
+    api.deletePatient(patientProfile.patientId);
   };
   const set = (name) => {
     return ({ target: { value } }) => {
@@ -263,12 +266,18 @@ const Patients = () => {
             <button type="submit">Submit</button>
           </div>
         </form>
+        <div className="edit-patient-delete">
+          <button type="submit" onClick={deletePatient}>
+            Delete Patient
+          </button>
+        </div>
       </div>
     </PatientPage>
   );
 };
 
 const PatientPage = styled.div`
+  font-family: "Roboto", sans-serif;
   .wrapper-btn {
     text-align: end;
   }
@@ -342,24 +351,18 @@ const PatientPage = styled.div`
       }
     }
   }
-`;
-
-const PatientSelection = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  button {
-    flex: 1;
-    font-size: 1.5rem;
-    border: none;
-    margin-top: 0.5rem;
-    padding: 0.5rem 2rem;
-    cursor: pointer;
-    background: #5e8ec4;
-    color: white;
-    &:hover {
-      opacity: 0.7;
-      transition: 0.3;
+  .edit-patient-delete {
+    display: flex;
+    h2 {
+      flex: 1;
+    }
+    button {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      width: 20rem;
+      margin: 1rem;
+      background-color: #a00808;
     }
   }
 `;
@@ -374,90 +377,6 @@ const PatientsTable = styled.div`
     }
     td {
       text-align: center;
-    }
-  }
-`;
-
-const AddPatient = styled.div`
-  h2 {
-    font-size: 2.5rem;
-    padding: 0.5rem;
-    margin-top: 1rem;
-  }
-  form {
-    margin: 3rem;
-
-    div {
-      display: flex;
-    }
-    input {
-      flex: 1;
-      font-size: 1.5rem;
-      padding: 0.5rem;
-      border: none;
-      margin-top: 1rem;
-      box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
-      flex: 1;
-    }
-    label {
-      flex: 1;
-      margin: 1rem 1rem 0rem 0rem;
-      font-size: 1.5rem;
-    }
-    button {
-      font-size: 1.5rem;
-      border: none;
-      margin-top: 1rem;
-      padding: 0.5rem 2rem;
-      cursor: pointer;
-      background: #5e8ec4;
-      color: white;
-      &:hover {
-        opacity: 0.7;
-        transition: 0.3;
-      }
-    }
-  }
-`;
-
-const EditPatient = styled.div`
-  h2 {
-    font-size: 2.5rem;
-    padding: 0.5rem;
-    margin-top: 1rem;
-  }
-  form {
-    margin: 3rem;
-
-    div {
-      display: flex;
-    }
-    input {
-      flex: 1;
-      font-size: 1.5rem;
-      padding: 0.5rem;
-      border: none;
-      margin-top: 1rem;
-      box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
-      flex: 1;
-    }
-    label {
-      flex: 1;
-      margin: 1rem 1rem 0rem 0rem;
-      font-size: 1.5rem;
-    }
-    button {
-      font-size: 1.5rem;
-      border: none;
-      margin-top: 1rem;
-      padding: 0.5rem 2rem;
-      cursor: pointer;
-      background: #5e8ec4;
-      color: white;
-      &:hover {
-        opacity: 0.7;
-        transition: 0.3;
-      }
     }
   }
 `;

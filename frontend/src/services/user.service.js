@@ -3,29 +3,13 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:4000/";
 
-const getPublicContent = () => {
-  return axios.get(API_URL + "all");
-};
-
-const getUserBoard = () => {
-  return axios.get(API_URL + "user", { headers: authHeader() });
-};
-
-const getModeratorBoard = () => {
-  return axios.get(API_URL + "mod", { headers: authHeader() });
-};
-
-const getAdminBoard = () => {
-  return axios.get(API_URL + "admin", { headers: authHeader() });
-};
-
 const getPatients = () => {
-  return axios.get(API_URL + "admin/viewPatients", { headers: authHeader() });
+  return axios.get(API_URL + "patients", { headers: authHeader() });
 };
 
 const addPatient = async (patient) => {
   return await axios
-    .post(API_URL + "addNewPatient", {
+    .post(API_URL + "patient", {
       headers: authHeader(),
       patient,
     })
@@ -53,7 +37,7 @@ const searchPatient = async (patientId) => {
 
 const editPatient = async (patient) => {
   return await axios
-    .post(API_URL + "editPatient", {
+    .put(API_URL + `patient`, {
       headers: authHeader(),
       patient,
     })
@@ -65,13 +49,26 @@ const editPatient = async (patient) => {
     });
 };
 
+const deletePatient = async (patientId) => {
+  return await axios
+    .delete(API_URL + `patient/${patientId}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 const getDoctors = () => {
-  return axios.get(API_URL + "admin/viewDoctors", { headers: authHeader() });
+  return axios.get(API_URL + "doctors", { headers: authHeader() });
 };
 
 const addDoctor = async (doctor) => {
   return await axios
-    .post(API_URL + "admin/addDoctor", {
+    .post(API_URL + "doctor", {
       headers: authHeader(),
       doctor,
     })
@@ -83,7 +80,7 @@ const addDoctor = async (doctor) => {
     });
 };
 
-const searchDoctor = async (doctorId) => {
+/* const searchDoctor = async (doctorId) => {
   return await axios
     .post(API_URL + "admin/searchDoctor", {
       headers: authHeader(),
@@ -96,12 +93,25 @@ const searchDoctor = async (doctorId) => {
       return err.response;
     });
 };
-
+ */
 const editDoctor = async (doctor) => {
   return await axios
-    .post(API_URL + "admin/editDoctor", {
+    .put(API_URL + "doctor", {
       headers: authHeader(),
       doctor,
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
+const deleteDoctor = async (doctorId) => {
+  return await axios
+    .delete(API_URL + `doctor/${doctorId}`, {
+      headers: authHeader(),
     })
     .then((response) => {
       return response.status;
@@ -117,7 +127,7 @@ const getAppointments = () => {
 
 const addAppointment = async (data) => {
   return await axios
-    .post(API_URL + "addAppointment", {
+    .post(API_URL + "appointment", {
       headers: authHeader(),
       data,
     })
@@ -130,12 +140,12 @@ const addAppointment = async (data) => {
 };
 
 const getBills = async () => {
-  return axios.get(API_URL + "viewBills", { headers: authHeader() });
+  return axios.get(API_URL + "bills", { headers: authHeader() });
 };
 
 const addBill = async (data) => {
   return await axios
-    .post(API_URL + "addBill", {
+    .post(API_URL + "bill", {
       headers: authHeader(),
       data,
     })
@@ -147,21 +157,32 @@ const addBill = async (data) => {
     });
 };
 
+const deleteBill = async (billId) => {
+  return await axios
+    .delete(API_URL + `bill/${billId}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      return response.status;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 export {
-  getPublicContent,
-  getUserBoard,
-  getModeratorBoard,
-  getAdminBoard,
   getPatients,
   addPatient,
   searchPatient,
   editPatient,
+  deletePatient,
   getDoctors,
   addDoctor,
-  searchDoctor,
   editDoctor,
+  deleteDoctor,
   getAppointments,
   addAppointment,
   getBills,
   addBill,
+  deleteBill,
 };

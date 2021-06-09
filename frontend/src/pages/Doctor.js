@@ -42,6 +42,10 @@ const Doctor = () => {
     e.preventDefault();
     api.editDoctor(doctorProfile);
   };
+  const deleteDoctor = (e) => {
+    e.preventDefault();
+    api.deleteDoctor(doctorProfile.doctorId);
+  };
   const set = (name) => {
     return ({ target: { value } }) => {
       setDoctorProfile((oldValues) => ({ ...oldValues, [name]: value }));
@@ -196,6 +200,11 @@ const Doctor = () => {
           <div>
             <button type="submit">Submit</button>
           </div>
+          <div className="edit-doctor-delete">
+            <button type="submit" onClick={deleteDoctor}>
+              Delete Doctor
+            </button>
+          </div>
         </form>
       </div>
     </DoctorPage>
@@ -203,6 +212,7 @@ const Doctor = () => {
 };
 
 const DoctorPage = styled.div`
+  font-family: "Roboto", sans-serif;
   .wrapper-btn {
     text-align: end;
   }
@@ -274,6 +284,20 @@ const DoctorPage = styled.div`
         opacity: 0.7;
         transition: 0.3;
       }
+    }
+  }
+  .edit-doctor-delete {
+    display: flex;
+    h2 {
+      flex: 1;
+    }
+    button {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      width: 20rem;
+      margin: 1rem;
+      background-color: #a00808;
     }
   }
 `;

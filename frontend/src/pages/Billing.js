@@ -26,6 +26,13 @@ const Billing = () => {
     clearState();
     await getTable();
   };
+  const deleteBill = async (e) => {
+    e.preventDefault();
+    const billId = e.target.parentElement.parentNode.id;
+
+    api.deleteBill(billId);
+  };
+
   useEffect(() => {
     getTable();
   }, []);
@@ -83,18 +90,22 @@ const Billing = () => {
               <th>Patient ID</th>
               <th>Name</th>
               <th>Amount</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {table &&
               table.map((row) => (
-                <tr key={row.billNumber}>
+                <tr key={row.billNumber} id={row.billNumber}>
                   <td>{row.billNumber}</td>
                   <td>{row.patientId}</td>
                   <td>
                     {row.lastName}, {row.firstName}
                   </td>
                   <td>{row.amount}</td>
+                  <td>
+                    <button onClick={deleteBill}>Delete</button>
+                  </td>
                 </tr>
               ))}
           </tbody>
@@ -105,6 +116,20 @@ const Billing = () => {
 };
 
 const Billings = styled.div`
+  font-family: "Roboto", sans-serif;
+  button {
+    font-size: 1.5rem;
+    border: none;
+    margin-top: 1rem;
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+    background: #5e8ec4;
+    color: white;
+    &:hover {
+      opacity: 0.7;
+      transition: 0.3;
+    }
+  }
   .side-menu {
     position: fixed;
     top: 0;
@@ -137,19 +162,6 @@ const Billings = styled.div`
         margin: 1rem 1rem 0rem 0rem;
         font-size: 1.5rem;
       }
-      button {
-        font-size: 1.5rem;
-        border: none;
-        margin-top: 1rem;
-        padding: 0.5rem 2rem;
-        cursor: pointer;
-        background: #5e8ec4;
-        color: white;
-        &:hover {
-          opacity: 0.7;
-          transition: 0.3;
-        }
-      }
     }
   }
   .active-side-menu {
@@ -158,19 +170,6 @@ const Billings = styled.div`
   }
   .wrapper-btn {
     text-align: end;
-    button {
-      font-size: 1.5rem;
-      border: none;
-      margin-top: 1rem;
-      padding: 0.5rem 2rem;
-      cursor: pointer;
-      background: #5e8ec4;
-      color: white;
-      &:hover {
-        opacity: 0.7;
-        transition: 0.3;
-      }
-    }
   }
   table {
     margin-top: 1rem;
@@ -181,6 +180,10 @@ const Billings = styled.div`
     }
     td {
       text-align: center;
+      button {
+        background-color: #a00808;
+        padding: 0.5rem 0.5rem;
+      }
     }
   }
 `;
